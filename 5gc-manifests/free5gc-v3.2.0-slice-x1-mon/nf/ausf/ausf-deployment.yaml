@@ -1,0 +1,72 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/ausf/ausf-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free5gc-ausf
+  labels:
+    project: free5gc
+    nf: ausf
+spec:
+  selector:
+    matchLabels:
+      project: free5gc
+      nf: ausf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        project: free5gc
+        nf: ausf
+      annotations:
+        checksum/config: 6ca9f86be95cc5f69d0ba84b211e08613502bd31f356ef469b566081d36451d0-7222864f6ca9b25998f9fa140cf3f852464431c9cbf5d7c2e86cdfd9c5713192
+    spec:
+      initContainers:
+      - name: wait-nrf
+        image: towards5gs/initcurl:1.0.0
+        env:
+        - name: DEPENDENCIES
+          value: http://nrf-nnrf:8000
+        command: ['sh', '-c', 'set -x; for dependency in $DEPENDENCIES; do while [ $(curl --connect-timeout 5 -s -o /dev/null -w "%{http_code}" $dependency) -ne 200 ]; do echo waiting for dependencies; sleep 1; done; done;']
+      containers:
+      - image: ghcr.io/niloysh/free5gc-aio:v3.2.0
+        name: ausf
+        ports:
+        - containerPort: 8000
+        command: ["./ausf"]
+        args: ["--config", "config/ausfcfg.yaml"]  
+        env:
+          - name: GIN_MODE
+            value: release
+        volumeMounts:
+        - mountPath: /free5gc/config/
+          name: ausf-volume
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "150m"
+          limits:
+            memory: "64Mi"
+            cpu: "150m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: ausf-volume
+        projected:
+          sources:
+          - configMap:
+              name: ausf-configmap
+          - configMap:
+              name: free5gc4controlplane-configmap

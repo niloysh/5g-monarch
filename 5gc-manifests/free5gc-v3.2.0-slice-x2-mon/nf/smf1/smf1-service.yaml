@@ -1,0 +1,29 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/smf/smf-service.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: smf1-nsmf
+  labels:
+    project: free5gc
+    nf: smf
+    app: smf1
+spec:
+  ports:
+    - port: 8000
+  selector:
+    project: free5gc
+    nf: smf
+    app: smf1

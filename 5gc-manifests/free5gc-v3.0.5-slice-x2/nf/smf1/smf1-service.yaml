@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smf-nsmf
+  labels:
+    project: free5gc
+    nf: smf1
+spec:
+  ports:
+    - port: 80
+  selector:
+    project: free5gc
+    nf: smf1

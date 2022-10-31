@@ -1,0 +1,21 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: 5gnetwork
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "macvlan",
+      "master": "eno1",
+      "mode": "bridge",
+      "ipam": {
+        "type": "static",
+        "subnet": "129.97.168.0/24",
+        "exclude": [ "129.97.168.1/24" ],
+        "routes": [
+          { "dst": "0.0.0.0/0" }
+        ],
+        "gateway": "129.97.168.1"
+      }
+    }'

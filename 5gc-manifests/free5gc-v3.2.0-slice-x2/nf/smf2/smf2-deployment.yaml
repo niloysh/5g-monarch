@@ -1,0 +1,93 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/smf/smf-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free5gc-smf2
+  labels:
+    project: free5gc
+    nf: smf
+    app: smf2
+spec:
+  selector:
+    matchLabels:
+      project: free5gc
+      nf: smf
+      app: smf2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        project: free5gc
+        nf: smf
+        app: smf2
+      annotations:
+        checksum/config: 8007a003c91d932bbfdb9e5c34f17d9eee1b7af5aaf08e2c5564513ac007afb4-7222864f6ca9b25998f9fa140cf3f852464431c9cbf5d7c2e86cdfd9c5713192
+        k8s.v1.cni.cncf.io/networks: '[
+          { "name": "5gnetwork", "interface": "n4", "ips": [ "129.97.168.82/24" ] }
+          ]'
+    spec:
+      initContainers:
+      - name: wait-nrf
+        image: towards5gs/initcurl:1.0.0
+        env:
+        - name: DEPENDENCIES
+          value: http://nrf-nnrf:8000
+        command: ['sh', '-c', 'set -x; for dependency in $DEPENDENCIES; do while [ $(curl --connect-timeout 5 -s -o /dev/null -w "%{http_code}" $dependency) -ne 200 ]; do echo waiting for dependencies; sleep 1; done; done;']
+      containers:
+      - image: ghcr.io/niloysh/free5gc-aio:v3.2.0
+        name: smf
+        imagePullPolicy: Always
+        ports:
+        - name: nsmf
+          containerPort: 8000
+        - name: pfcp
+          containerPort: 8805
+          protocol: UDP
+        command: ["./smf"]
+        args: ["--config", "config/smfcfg.yaml"]   
+        env:
+          - name: GIN_MODE
+            value: release
+        volumeMounts:
+        - mountPath: /free5gc/config/
+          name: smf-volume
+        - mountPath: /var/log/
+          name: varlog
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "150m"
+          limits:
+            memory: "64Mi"
+            cpu: "150m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: smf-volume
+        projected:
+          sources:
+          - configMap:
+              name: smf2-configmap
+              # All items can be deleted after solving the problem
+              items:
+              - key: smfcfg.yaml
+                path: smfcfg.yaml
+              - key: uerouting.yaml
+                path: uerouting.yaml
+          - configMap:
+              name: free5gc4controlplane-configmap
+      - name: varlog
+        emptyDir: {}

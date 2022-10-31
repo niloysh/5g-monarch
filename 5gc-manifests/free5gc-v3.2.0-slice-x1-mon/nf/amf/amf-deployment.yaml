@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free5gc-amf
+  labels:
+    project: free5gc
+    nf: amf
+spec:
+  selector:
+    matchLabels:
+      project: free5gc
+      nf: amf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        project: free5gc
+        nf: amf
+      annotations:
+        checksum/config: 9511485a2b62c3c813f21098c7b4b3b4782d9781e865d64cb43fcb9a214a6a50-7222864f6ca9b25998f9fa140cf3f852464431c9cbf5d7c2e86cdfd9c5713192
+        k8s.v1.cni.cncf.io/networks: '[
+          { "name": "5gnetwork", "interface": "n2", "ips": [ "129.97.168.161/24" ] }
+          ]'
+    spec:
+      initContainers:
+      - name: wait-nrf
+        image: towards5gs/initcurl:1.0.0
+        env:
+        - name: DEPENDENCIES
+          value: http://nrf-nnrf:8000
+        command: ['sh', '-c', 'set -x; for dependency in $DEPENDENCIES; do while [ $(curl --connect-timeout 1 -s -o /dev/null -w "%{http_code}" $dependency) -ne 200 ]; do echo waiting for dependencies; sleep 1; done; done;']
+      containers:
+      - image: ghcr.io/niloysh/free5gc-aio:v3.2.0
+        imagePullPolicy: Always
+        name: amf
+        ports:
+        - name: namf
+          containerPort: 8000
+        - name: n2
+          containerPort: 38412
+          protocol: SCTP
+        command: ["./amf"]
+        args: ["--config", "config/amfcfg.yaml"]
+        env:
+          - name: GIN_MODE
+            value: release
+        volumeMounts:
+        - mountPath: /free5gc/config/
+          name: amf-volume
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "150m"
+          limits:
+            memory: "64Mi"
+            cpu: "150m"
+      # nodeSelector:
+      #   kubernetes.io/hostname: worker-1
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: amf-volume
+        projected:
+          sources:
+          - configMap:
+              name: amf-configmap
+          - configMap:
+              name: free5gc4controlplane-configmap

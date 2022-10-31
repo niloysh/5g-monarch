@@ -1,0 +1,49 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/nrf/nrf-configmap.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nrf-configmap
+  labels:
+    app: free5gc
+data:
+  nrfcfg.yaml: |
+    info:
+      version: 1.0.1
+      description: NRF initial local configuration
+    
+    configuration:
+      MongoDBName: free5gc
+      MongoDBUrl: mongodb://mongodb:27017
+      sbi:
+        scheme: http
+        registerIPv4: nrf-nnrf # IP used to serve NFs or register to another NRF
+        bindingIPv4: 0.0.0.0  # IP used to bind the service
+        port: 8000
+        tls: # the local path of TLS key
+          pem: config/TLS/nrf.pem # NRF TLS Certificate
+          key: config/TLS/nrf.key # NRF TLS Private key
+      DefaultPlmnId:
+        mcc: 208
+        mnc: 93
+      serviceNameList:
+        - nnrf-nfm
+        - nnrf-disc
+    
+    logger:
+      NRF:
+        debugLevel: info
+        ReportCaller: false
+  
