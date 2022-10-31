@@ -1,0 +1,27 @@
+namespaceOverride: kube-prometheus
+
+prometheus:
+  enabled: true
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30090
+  scrapeInterval: 5s
+  retention: 1d
+  nodeSelector:
+    nodetype: access
+  thanos:
+    create: true
+    objectStorageConfig:
+      key: thanos.yaml
+      name: thanos-objstore-config
+    service:
+      type: NodePort
+      nodePorts:
+        grpc: 30901
+
+alertmanager:
+  enabled: false
+
+
+

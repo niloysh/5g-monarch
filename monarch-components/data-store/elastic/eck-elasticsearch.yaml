@@ -1,0 +1,42 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+spec:
+  version: 8.2.0
+  nodeSets:
+  - name: default
+    count: 3
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # Do not change this name 
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: local-storage
+    config:
+      node.store.allow_mmap: false
+    podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              env:
+                - name: ES_JAVA_OPTS
+                  value: -Xms500m -Xmx500m
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 2Gi
+  http:
+    service:
+      spec:
+        type: NodePort
+        ports:
+          - port: 9200
+            name: https
+            targetPort: 9200
+            protocol: TCP
+            nodePort: 31920

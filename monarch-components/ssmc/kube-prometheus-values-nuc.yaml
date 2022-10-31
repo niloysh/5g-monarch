@@ -1,0 +1,71 @@
+namespaceOverride: "monitoring"
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+  service:
+    type: NodePort
+    nodePort: 32000
+  serviceMonitor:
+    interval: 5s
+
+prometheus:
+  enabled: true
+
+  thanosService:
+    enabled: false
+
+  thanosServiceMonitor:
+    enabled: false
+    type: NodePort
+  
+  thanosServiceExternal:
+    enabled: false
+    type: NodePort
+
+  service:
+    type: NodePort
+  
+  serviceMonitor:
+    interval: "5s"
+    selfMonitor: true
+
+  prometheusSpec:
+    externalLabels:
+      cluster: NUC
+
+    scrapeInterval: 5s
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+    retention: 7d
+    
+    # thanos:
+    #   image: "quay.io/thanos/thanos:v0.24.0"
+    #   version: v0.24.0
+    #   objectStorageConfig:
+    #     key: thanos.yaml
+    #     name: thanos-objstore-config
+
+# kubelet:
+#   enabled: true
+#   serviceMonitor:
+#     interval: "3s"
+
+# kube-state-metrics:
+#   prometheus:
+#     monitor:
+#       enabled: true
+#       interval: "3s"
+
+nodeExporter:
+  enabled: true
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      enabled: true
+      relabelings:
+      - sourceLabels: [__meta_kubernetes_endpoint_node_name]
+        targetLabel: node
