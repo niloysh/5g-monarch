@@ -1,0 +1,62 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcUserPlane/templates/upf/upf-configmap.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: upf1-configmap
+  labels:
+    app: free5gc
+data:
+  upfcfg.yaml: |
+    version: 1.0.3
+    description: UPF initial local configuration
+
+    # The listen IP and nodeID of the N4 interface on this UPF (Can't set to 0.0.0.0)
+    pfcp:
+      addr: 129.97.168.111   # IP addr for listening
+      nodeID: 129.97.168.111 # External IP or FQDN can be reached
+      retransTimeout: 1s # retransmission timeout
+      maxRetrans: 3 # the max number of retransmission
+
+    gtpu:
+      forwarder: gtp5g
+      # The IP list of the N3/N9 interfaces on this UPF
+      # If there are multiple connection, set addr to 0.0.0.0 or list all the addresses
+      ifList:
+        - addr: 129.97.168.91
+          type: N3
+          # name: upf.5gc.nctu.me
+          # ifname: gtpif
+
+    # The DNN list supported by UPF
+    dnnList:
+      - dnn: internet # Data Network Name
+        cidr: 10.1.0.0/16 # Classless Inter-Domain Routing for assigned IPv4 pool of UE
+        # natifname: eth0
+
+    logger: # log output setting
+      enable: true # true or false
+      level: info # how detailed to output, value: trace, debug, info, warn, error, fatal, panic
+      reportCaller: false # enable the caller report or not, value: true or false
+
+
+  wrapper.sh: |
+    #!/bin/bash
+
+    ### Implement networking rules
+    iptables -A FORWARD -j ACCEPT
+    iptables -t nat -A POSTROUTING -s 10.1.0.0/16 -o eth0 -j MASQUERADE  # route traffic comming from the UE SUBNET to the interface N6    
+
+    /free5gc/upf --config /free5gc/config/upfcfg.yaml

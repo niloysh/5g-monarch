@@ -1,0 +1,104 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcUserPlane/templates/upf/upf-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free5gc-upf1
+  labels:
+    project: free5gc
+    nf: upf
+    app: upf1
+spec:
+  selector:
+    matchLabels:
+      project: free5gc
+      nf: upf
+      app: upf1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        project: free5gc
+        nf: upf
+        app: upf1
+      annotations:
+        checksum/config: 1d4634e028343475c0a91b23beca2865486dd80260a705d18333c249e6d40f97
+        k8s.v1.cni.cncf.io/networks: '[
+          { "name": "5gnetwork", "interface": "n3", "ips": [ "129.97.168.91/24" ] },
+          { "name": "5gnetwork", "interface": "n6", "ips": [ "129.97.168.101/24" ] },
+          { "name": "5gnetwork", "interface": "n4", "ips": [ "129.97.168.111/24" ] }
+          ]'
+    spec:
+
+      # don't schedule multiple UPF pods on the same node.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodetype
+                operator: In
+                values:
+                - userplane
+
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: nf
+                operator: In
+                values:
+                - upf
+            topologyKey: kubernetes.io/hostname
+
+      containers:
+      - image: ghcr.io/niloysh/free5gc-aio:v3.2.0
+        name: upf
+        imagePullPolicy: Always
+        ports:
+        - name: n4
+          containerPort: 8805
+          protocol: UDP
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+        # command: [ "/bin/bash", "-c", "--" ]
+        # args: [ "while true; do sleep 30; done;" ]
+        command: [ "/free5gc/config/wrapper.sh" ]
+        volumeMounts:
+        - mountPath: /free5gc/config/
+          name: upf-volume
+        - mountPath: /var/log/
+          name: varlog
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "750m"
+      restartPolicy: Always
+      volumes:
+      - name: upf-volume
+        configMap:
+          name: upf1-configmap
+          items:
+          - key: upfcfg.yaml
+            path: upfcfg.yaml
+          - key: wrapper.sh
+            path: wrapper.sh
+            mode: 0777
+      - name: varlog
+        emptyDir: {}

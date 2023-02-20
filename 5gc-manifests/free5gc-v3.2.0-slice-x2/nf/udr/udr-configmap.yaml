@@ -1,0 +1,47 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/udr/udr-configmap.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udr-configmap
+  labels:
+    app: free5gc
+data:
+  udrcfg.yaml: |
+    info:
+      version: 1.0.1
+      description: UDR initial local configuration
+
+    configuration:
+      sbi: # Service-based interface information
+        scheme: http # the protocol for sbi (http or https)
+        registerIPv4: udr-nudr # IP used to register to NRF
+        bindingIPv4: 0.0.0.0  # IP used to bind the service
+        port: 8000 # port used to bind the service
+        tls: # the local path of TLS key
+          pem: config/TLS/udr.pem # UDR TLS Certificate
+          key: config/TLS/udr.key # UDR TLS Private key
+      mongodb:
+        name: free5gc # Database name in MongoDB
+        url: mongodb://mongodb:27017 # URL of MongoDB
+      nrfUri: http://nrf-nnrf:8000 # a valid URI of NRF
+
+    # the kind of log output
+    # debugLevel: how detailed to output, value: trace, debug, info, warn, error, fatal, panic
+    # ReportCaller: enable the caller report or not, value: true or false
+    logger:
+      UDR:
+        debugLevel: info
+        ReportCaller: false

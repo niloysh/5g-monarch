@@ -1,0 +1,92 @@
+---
+# Source: free5gc-multi-slice/charts/free5gcControlPlane/templates/nrf/nrf-deployment.yaml
+#
+# Software Name : towards5gs-helm
+# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache License 2.0,
+# the text of which is available at todo
+# or see the "LICENSE" file for more details.
+#
+# Author: Abderaouf KHICHANE, Ilhem FAJJARI, Ayoub BOUSSELMI
+# Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free5gc-nrf
+  labels:
+    project: free5gc
+    nf: nrf
+spec:
+  selector:
+    matchLabels:
+      project: free5gc
+      nf: nrf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        project: free5gc
+        nf: nrf
+      annotations:
+        checksum/config: 9f9135564489f19590400cb06f2be98865046a74e24cc6de549d703c7c980ad0-7222864f6ca9b25998f9fa140cf3f852464431c9cbf5d7c2e86cdfd9c5713192
+    spec:
+      initContainers:
+      - name: wait-mongo
+        image: busybox:1.32.0
+        env:
+        - name: DEPENDENCIES
+          value: mongodb:27017
+        command: ["sh", "-c", "until nc -z $DEPENDENCIES; do echo waiting for the MongoDB; sleep 2; done;"]
+      containers:
+      - image: ghcr.io/niloysh/free5gc-aio:v3.2.0
+        name: nrf
+        ports:
+        - containerPort: 8000
+        command: ["./nrf"]
+        args: ["--config", "config/nrfcfg.yaml"]
+        env: 
+          - name: DB_URI
+            value: mongodb://mongodb/free5gc
+          - name: GIN_MODE
+            value: release
+        volumeMounts:
+        - mountPath: /free5gc/config/
+          name: nrf-volume
+        readinessProbe:
+          initialDelaySeconds: 0
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold:  40
+          successThreshold: 1
+          httpGet:
+            scheme: "HTTP"
+            port: 8000
+        livenessProbe:
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+          httpGet:
+            scheme: "HTTP"
+            port: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "150m"
+          limits:
+            memory: "64Mi"
+            cpu: "150m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: nrf-volume
+        projected:
+          sources:
+          - configMap:
+              name: nrf-configmap
+          - configMap:
+              name: free5gc4controlplane-configmap
