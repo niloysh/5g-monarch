@@ -4,6 +4,9 @@
 
 **5G-MonArch** is a network slice monitoring architecture for cloud native 5G network deployments. This repository contains the source code and configuration files for setting up cloud native 5G network slice deployment, based on the Free5GC and UERANSIM projects, along with 5G-MonArch.
 
+[Video on network slice throughput KPI visualization](https://www.youtube.com/watch?v=pIMBCwPs0wc)
+
+
 # Deploying a basic 5G network
 
 ## Dependencies
@@ -201,6 +204,10 @@ This will initiate a setup with the following:
 - UPF pod now has 3 containers: 1) upf 2) upf-stats which logs upf statistics, and 3) upf-exporter, which exposes upf statistics to SSMC
 - SMF pod now has 2 containers: 1) smf and 2) smf-logs which exposes slice information to Filebeats, which then sends it to data distribution (Apache Kafka).
 
+Note that in the screenshot below, there are 2 containers in the SMF pods and 3 containers in the UPF pods.
+
+![slice-x2-up](/images/slice-x2-up.png)
+
 #### Deploy FileBeats
 We use FileBeats as an MDE to send the slice information from the SMF to the data distribution module.  
 
@@ -220,6 +227,13 @@ output.kafka:
 ```
 
 At this point, if you setup a PDU session and send some traffic though the networks, you should see packet statistics shown in the `upf-stats` container and slice information shown in the `smf-logs` container.
+
+UPF stats should look as below.
+
+![upf-stats](/images/pdr-stats-log.png)
+
+SMF logs shoud look as below.
+![smf-logs](/images/smf-logs-log.png)
 
 
 ### Deploy MDE auto discovery mechanism
@@ -242,12 +256,30 @@ kubectl apply -f monarch-components/kpi-computation/kpi-monitor
 
 **Note**: You *will* have to change the ElasticSearch and Prometheus endpoints in the kpi-exporter container to make it suitable for your scenario. The code is available [here](https://github.com/niloysh/free5gc-dockerfiles/kpi-monitor).
 
+KPI monitor logs should look like below.
+
+![kpi-monitor](/images/kpi-exporter-log.png)
+
 ### Visualizing network slice throughput KPI
 
 Slice thoughput may be visualized in the Grafana dashboard, provided the components above are working correctly.
 
 A pre-configured Grafana dashboard is available in `monarch-components/kpi-computation/visualization/`. You can import the JSON file in Grafana to create the dashboard.
 
-[Video of network slice throughput KPI visualization](https://www.youtube.com/watch?v=pIMBCwPs0wc)
+[![grafana-dashboard](/images/grafana-dashboard.png)](https://www.youtube.com/watch?v=pIMBCwPs0wc)
 
 
+## Credits
+These manifest files are heavily inspired from [towards5gs-helm](https://github.com/Orange-OpenSource/towards5gs-helm) and the Docker images used are based on [free5gc-compose](https://github.com/free5gc/free5gc-compose).
+
+## Citation
+![GitHub](https://img.shields.io/badge/IEEE%20NOMS-2023-green)
+
+If you use the code in this repository in your research work or project, please consider citing the following publication.
+
+> N. Saha, N. Shahriar, R. Boutaba and A. Saleh. (2023). MonArch: Network Slice Monitoring Architecture for Cloud Native 5G Deployments. In Proceedings of the IEEE/IFIP Network Operations and Management Symposium (NOMS). Miami, Florida, USA, 08 - 12 May, 2023.
+
+
+## Contributions
+Contributions, improvements to documentation,  and bug-fixes are always welcome!
+See [first-contributions](https://github.com/firstcontributions/first-contributions).

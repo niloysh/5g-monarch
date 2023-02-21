@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       
-      - image: ghcr.io/niloysh/kpi-exporter:v1.0.0
+      - image: ghcr.io/niloysh/kpi-exporter:v1.0.1
         name: kpi-exporter
         imagePullPolicy: Always
         ports:
