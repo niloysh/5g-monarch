@@ -4,7 +4,8 @@
 
 **5G-MonArch** is a network slice monitoring architecture for cloud native 5G network deployments. This repository contains the source code and configuration files for setting up cloud native 5G network slice deployment, based on the Free5GC and UERANSIM projects, along with 5G-MonArch.
 
-[Video on network slice throughput KPI visualization](https://www.youtube.com/watch?v=pIMBCwPs0wc)
+[![GitHub](https://img.shields.io/badge/Video-green)](https://www.youtube.com/watch?v=pIMBCwPs0wc) [![GitHub](https://img.shields.io/badge/Download%20Paper-green)](https://niloysaha.me/papers/conferences/2023-noms-monarch.pdf)
+
 
 
 # Deploying a basic 5G network
