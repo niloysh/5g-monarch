@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kpi-exporter-service
-  namespace: test
+  namespace: free5gc
   labels:
     app: kpi-exporter
 spec:

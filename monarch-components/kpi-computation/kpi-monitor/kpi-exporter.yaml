@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deployment-kpi-exporter
-  namespace: test
+  namespace: free5gc
   labels:
     app: kpi-exporter
 spec:
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       
-      - image: ghcr.io/niloysh/kpi-exporter:v1.0.1
+      - image: ghcr.io/niloysh/kpi-exporter:v1.2.0
         name: kpi-exporter
         imagePullPolicy: Always
         ports:
@@ -26,9 +26,18 @@ spec:
           containerPort: 9000
 
         command: [ "/bin/bash", "-c", "--" ]
-        args: [ "python -u kpi-exporter.py" ]
+        args:
+        - |
+          if [ "$DEBUG_MODE" = "true" ]; then
+            while true; do sleep 30; done;
+          else
+            python -u kpi-exporter.py
+          fi
 
-        # command: [ "/bin/bash", "-c", "--" ]
-        # args: [ "while true; do sleep 30; done;" ]
+        env:
+          - name: UPDATE_PERIOD
+            value: "5"
+          - name: DEBUG_MODE
+            value: "false"
 
       restartPolicy: Always

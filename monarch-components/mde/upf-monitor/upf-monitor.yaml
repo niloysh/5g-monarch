@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: upf-service
-  namespace: test
+  namespace: free5gc
   labels:
     nf: upf
 spec:
@@ -29,4 +29,4 @@ spec:
       nf: upf # target upf service
   endpoints:
   - port: metrics
-    interval: 10s
+    interval: 5s
