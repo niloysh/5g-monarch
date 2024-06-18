@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kpi-calculator
+  namespace: monarch
+  labels:
+    app: monarch
+    component: kpi-calculator
+spec:
+  selector:
+    matchLabels:
+      app: monarch
+      component: kpi-calculator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monarch
+        component: kpi-calculator
+    spec:
+      containers:
+        - image: ghcr.io/niloysh/kpi-calculator-open5gs:v1.0.0
+          name: kpi-calculator
+          imagePullPolicy: Always
+          ports:
+            - name: metrics
+              containerPort: 9000
+          env:
+            - name: UPDATE_PERIOD
+              value: "1"
+            - name: MONARCH_THANOS_URL
+              value: "${MONARCH_THANOS_URL}"
+            - name: TIME_RANGE
+              value: "5s"
+          command: ["/bin/bash", "-c", "--"]
+          args: ["python -u kpi_calculator.py"]
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kpi-calculator-service
+  namespace: monarch
+  labels:
+    app: monarch
+    component: kpi-calculator
+spec:
+  ports:
+    - name: metrics # expose metrics port
+      port: 9000 # defined in chart
+      targetPort: metrics # port name in pod
+  selector:
+    app: monarch # target pods
+    component: kpi-calculator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kpi-calculator-servicemonitor
+  namespace: monarch
+  labels:
+    app: monarch
+    component: kpi-calculator
+spec:
+  namespaceSelector:
+    any: true # important otherwise this is not picked up
+  selector:
+    matchLabels:
+      app: monarch # target service
+      component: kpi-calculator
+  endpoints:
+    - port: metrics
+      interval: 1s

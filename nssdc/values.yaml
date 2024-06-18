@@ -1,0 +1,100 @@
+fullnameOverride: nssdc
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+
+prometheus:
+  enabled: true
+
+  thanosService:
+    enabled: false
+
+  thanosServiceMonitor:
+    enabled: false
+    type: NodePort
+
+  thanosServiceExternal:
+    enabled: true
+    type: NodePort
+    nodePort: 30905
+    httpNodePort: 30906
+
+  service:
+    type: NodePort
+    nodePort: 30095
+
+  serviceMonitor:
+    interval: "${MONARCH_MONITORING_INTERVAL}"
+    selfMonitor: true
+
+  prometheusSpec:
+    externalLabels:
+      cluster: core
+
+    enableRemoteWriteReceiver: true
+
+    scrapeInterval: "${MONARCH_MONITORING_INTERVAL}"
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+    serviceMonitorNamespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values:
+            - open5gs
+            - monarch
+
+    retention: 5d
+
+    thanos:
+      image: quay.io/thanos/thanos:v0.31.0
+      objectStorageConfig:
+        key: thanos.yaml
+        name: thanos-objstore-config
+
+    additionalScrapeConfigsSecret:
+      enabled: true
+      name: additional-scrape-configs
+      key: additional-scrape-configs.yaml
+
+nodeExporter:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+
+coreDns:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubelet:
+  enabled: false
+
+prometheusOperator:
+  kubeletService:
+    enabled: false
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      enabled: true
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_endpoint_node_name]
+          targetLabel: node

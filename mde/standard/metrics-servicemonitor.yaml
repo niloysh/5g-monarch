@@ -1,0 +1,53 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: amf-servicemonitor
+  namespace: monarch
+  labels:
+    nf: amf
+    app: monarch
+spec:
+  namespaceSelector:
+    any: true # important otherwise this is not picked up
+  selector:
+    matchLabels:
+      nf: amf # target amf service
+  endpoints:
+    - port: metrics
+      interval: "${MONARCH_MONITORING_INTERVAL}"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: smf-servicemonitor
+  namespace: monarch
+  labels:
+    nf: smf
+    app: monarch
+spec:
+  namespaceSelector:
+    any: true # important otherwise this is not picked up
+  selector:
+    matchLabels:
+      nf: smf # target smf service
+  endpoints:
+    - port: metrics
+      interval: "${MONARCH_MONITORING_INTERVAL}"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: upf-servicemonitor
+  namespace: monarch
+  labels:
+    nf: upf
+    app: monarch
+spec:
+  namespaceSelector:
+    any: true # important otherwise this is not picked up
+  selector:
+    matchLabels:
+      nf: upf # target upf service
+  endpoints:
+    - port: metrics
+      interval: "${MONARCH_MONITORING_INTERVAL}"

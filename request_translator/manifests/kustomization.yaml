@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monarch
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+configMapGenerator:
+  - name: slice-components-configmap
+    behavior: create
+    files:
+      - slice_components.json
+    options:
+      disableNameSuffixHash: true
+  - name: request-translator-configmap
+    literals:
+      - MONITORING_MANAGER_URI=http://monitoring-manager-service.monarch.svc.cluster.local:6000
+      - MONARCH_MONGO_URI=mongodb://datastore-mongodb.monarch.svc.cluster.local:27017
+      - SERVICE_ORCHESTRATOR_URI=http://129.97.168.40:5001
+    options:
+      disableNameSuffixHash: true

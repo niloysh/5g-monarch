@@ -1,0 +1,27 @@
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: smf-collector
+          scrape_interval: 1s
+          static_configs:
+            - targets: [smf-metrics-service.open5gs.svc.cluster.local:9090]
+
+        - job_name: upf-collector
+          scrape_interval: 1s
+          static_configs:
+            - targets: [upf-metrics-service.open5gs.svc.cluster.local:9090]
+
+processors:
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: monarch
+  logging:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: []
+      exporters: [prometheus]

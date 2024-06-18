@@ -1,0 +1,50 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+  service:
+    type: NodePort
+    nodePort: 32005
+  serviceMonitor:
+    interval: 1s
+  grafana.ini:
+    dashboards:
+      min_refresh_interval: 1s
+  sidecar:
+    datasources:
+        enabled: false
+        defaultDatasourceEnabled: true
+
+prometheus:
+  enabled: false
+
+nodeExporter:
+  enabled: false
+
+prometheusOperator:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: false
+
+kubeApiServer:
+  enabled: false
+
+coreDns:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubelet:
+  enabled: false

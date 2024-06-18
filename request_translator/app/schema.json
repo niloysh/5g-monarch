@@ -1,0 +1,104 @@
+{
+    "type": "object",
+    "properties": {
+        "api_version": {
+            "type": "string"
+        },
+        "request_description": {
+            "type": "string"
+        },
+        "scope": {
+            "type": "object",
+            "properties": {
+                "scope_type": {
+                    "type": "string"
+                },
+                "scope_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "scope_type",
+                "scope_id"
+            ]
+        },
+        "kpi": {
+            "type": "object",
+            "properties": {
+                "kpi_name": {
+                    "type": "string"
+                },
+                "kpi_description": {
+                    "type": "string"
+                },
+                "sub_counter": {
+                    "type": "object",
+                    "properties": {
+                        "sub_counter_type": {
+                            "type": "string"
+                        },
+                        "sub_counter_ids": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "sub_counter_type",
+                        "sub_counter_ids"
+                    ]
+                },
+                "units": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "kpi_name",
+                "kpi_description",
+                "sub_counter",
+                "units"
+            ]
+        },
+        "duration": {
+            "type": "object",
+            "properties": {
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end_time": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "required": [
+                "start_time",
+                "end_time"
+            ]
+        },
+        "monitoring_interval": {
+            "type": "object",
+            "properties": {
+                "adaptive": {
+                    "type": "boolean"
+                },
+                "interval_seconds": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "adaptive",
+                "interval_seconds"
+            ]
+        }
+    },
+    "required": [
+        "api_version",
+        "request_description",
+        "scope",
+        "kpi",
+        "duration",
+        "monitoring_interval"
+    ]
+}

@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mde-otel-servicemonitor
+  namespace: monarch
+  labels:
+    app: monarch
+    component: mde
+spec:
+  namespaceSelector:
+    any: true # important otherwise this is not picked up
+  selector:
+    matchLabels:
+      app: monarch # target service
+      component: mde
+  endpoints:
+    - port: metrics
+      interval: 1s

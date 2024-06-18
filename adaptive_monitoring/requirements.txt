@@ -1,0 +1,3 @@
+statsmodels
+scikit-learn
+seaborn

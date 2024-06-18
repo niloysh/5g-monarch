@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mde-otel-collector
+  labels:
+    app: monarch
+    component: mde
+spec:
+  selector:
+    matchLabels:
+      app: monarch
+      component: mde
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monarch
+        component: mde
+    spec:
+      containers:
+        - image: otel/opentelemetry-collector-contrib:0.94.0
+          imagePullPolicy: IfNotPresent
+          name: collector
+          ports:
+            - name: metrics
+              containerPort: 8889
+          # command: ["./open5gs-amfd"]
+          args: [--config=/conf/collector.yaml]
+          env:
+            - name: GIN_MODE
+              value: release
+          volumeMounts:
+            - mountPath: /conf
+              name: otel-volume
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - name: otel-volume
+          configMap:
+            name: otel-configmap
+            items:
+              - key: collector.yaml
+                path: collector.yaml

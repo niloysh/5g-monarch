@@ -1,0 +1,27 @@
+{
+    "api_version": "1.0",
+    "request_description": "Monitoring request for slice throughput",
+    "scope": {
+        "scope_type": "slice"
+    },
+    "kpi": {
+        "kpi_name": "slice_throughput",
+        "kpi_description": "Throughput of the network slice",
+        "sub_counter": {
+            "sub_counter_type": "SNSSAI",
+            "sub_counter_ids": [
+                "1-000001",
+                "2-000002"
+            ]
+        },
+        "units": "Mbps"
+    },
+    "duration": {
+        "start_time": "2023-12-01T00:00:00Z",
+        "end_time": "2023-12-01T00:05:00Z"
+    },
+    "monitoring_interval": {
+        "adaptive": true,
+        "interval_seconds": 1
+    }
+}

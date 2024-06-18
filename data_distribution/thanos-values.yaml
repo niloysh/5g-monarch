@@ -1,0 +1,59 @@
+objstoreConfig: |-
+  type: S3
+  config:
+    bucket: monarch-thanos
+    endpoint: "${MONARCH_MINIO_ENDPOINT}"
+    access_key: ${MONARCH_MINIO_ACCESS_KEY}
+    secret_key: ${MONARCH_MINIO_SECRET_KEY}
+    insecure: true
+
+query:
+  enabled: true
+  dnsDiscovery:
+    enabled: true
+    sidecarsService: prometheus-kube-prometheus-thanos-discovery
+    sidecarsNamespace: prometheus
+  stores:
+    - "${MONARCH_THANOS_STORE_GRPC}" # grpc
+    - "${MONARCH_THANOS_STORE_HTTP}" # http
+
+queryFrontend:
+  enabled: true
+  service:
+    type: NodePort
+    ports:
+      http: 9065
+    nodePorts:
+      http: 31004
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+
+bucketweb:
+  enabled: false
+
+compactor:
+  enabled: false
+
+storegateway:
+  enabled: true
+
+ruler:
+  enabled: false
+
+receive:
+  enabled: true
+  service:
+    type: NodePort
+    nodePorts:
+      http: 31005
+      grpc: 31006
+      remote: 31007
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: true
+    namespace: monarch
+    interval: 1s

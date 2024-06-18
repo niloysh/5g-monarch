@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-manager
+  namespace: monarch
+  labels:
+    app: monarch
+    component: monitoring-manager
+spec:
+  selector:
+    matchLabels:
+      app: monarch
+      component: monitoring-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monarch
+        component: monitoring-manager
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: nuc1
+      containers:
+        - image: ghcr.io/niloysh/monitoring-manager:v1.0.0
+          name: monitoring-manager
+          imagePullPolicy: Always
+          ports:
+            - name: api
+              containerPort: 6000
+          command: ["/bin/bash", "-c", "--"]
+          args: ["python -u run.py"]
+          # args: ["while true; do sleep 30000000; done;"]
+          envFrom:
+            - configMapRef:
+                name: monitoring-manager-configmap
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+      restartPolicy: Always

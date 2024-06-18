@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: amf-metrics-service
+  namespace: open5gs
+  labels:
+    nf: amf
+spec:
+  ports:
+    - name: metrics # expose metrics port
+      port: 9090 # defined in amf chart
+  selector:
+    nf: amf # target amf pods
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smf-metrics-service
+  namespace: open5gs
+  labels:
+    nf: smf
+spec:
+  clusterIP: None
+  ports:
+    - name: metrics # expose metrics port
+      port: 9090 # defined in smf chart
+  selector:
+    nf: smf # target smf pods
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf-metrics-service
+  namespace: open5gs
+  labels:
+    nf: upf
+spec:
+  clusterIP: None
+  ports:
+    - name: metrics # expose metrics port
+      port: 9090 # defined in upf chart
+  selector:
+    nf: upf # target upf pods

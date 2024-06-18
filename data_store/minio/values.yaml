@@ -1,0 +1,24 @@
+service:
+  type: NodePort
+  nodePort: 30712
+
+consoleService:
+  type: NodePort
+  nodePort: 30713
+
+rootUser: "admin"
+rootPassword: "monarch-operator"
+
+mode: standalone
+
+replicas: 1
+persistence:
+  enabled: true
+  size: 5Gi
+
+resources:
+  requests:
+    memory: 250Mi
+
+buckets:
+  - name: monarch-thanos

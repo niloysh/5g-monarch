@@ -1,0 +1,7 @@
+type: s3
+config:
+  bucket: monarch-thanos
+  endpoint: "${MONARCH_MINIO_ENDPOINT}"
+  access_key: ${MONARCH_MINIO_ACCESS_KEY}
+  secret_key: ${MONARCH_MINIO_SECRET_KEY}
+  insecure: true

@@ -1,0 +1,6 @@
+requests
+python-dotenv
+pymongo
+flask
+jsonschema
+shortuuid

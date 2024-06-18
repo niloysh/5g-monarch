@@ -1,0 +1,28 @@
+{
+    "api_version": "1.0",
+    "request_description": "Monitoring request for the number of QoS flows",
+    "scope": {
+        "scope_type": "nf",
+        "scope_id": "SMF01"
+    },
+    "kpi": {
+        "kpi_name": "smf.num_qos_flows",
+        "kpi_description": "Number of QoS flows at the SMF",
+        "sub_counter": {
+            "sub_counter_type": "5QI",
+            "sub_counter_ids": [
+                "1",
+                "6"
+            ]
+        },
+        "units": "count"
+    },
+    "duration": {
+        "start_time": "2023-12-01T00:00:00Z",
+        "end_time": "2023-12-01T00:30:00Z"
+    },
+    "monitoring_interval": {
+        "adaptive": false,
+        "interval_seconds": 5
+    }
+}

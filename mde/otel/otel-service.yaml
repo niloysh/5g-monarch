@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mde-otel-service
+  labels:
+    app: monarch
+    component: mde
+spec:
+  ports:
+    - name: metrics # expose metrics port
+      port: 8889 # defined in deployment
+  selector:
+    app: monarch # target pods
+    component: mde

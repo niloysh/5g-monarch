@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-translator
+  namespace: monarch
+  labels:
+    app: monarch
+    component: request-translator
+spec:
+  selector:
+    matchLabels:
+      app: monarch
+      component: request-translator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monarch
+        component: request-translator
+    spec:
+      containers:
+        - image: ghcr.io/niloysh/request-translator:v1.0.0
+          name: request-translator
+          imagePullPolicy: Always
+          ports:
+            - name: api
+              containerPort: 7000
+          command: ["/bin/bash", "-c", "--"]
+          args: ["python -u run.py"]
+          # args: ["while true; do sleep 30000000; done;"]
+          envFrom:
+            - configMapRef:
+                name: request-translator-configmap
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+      restartPolicy: Always
