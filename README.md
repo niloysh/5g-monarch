@@ -177,6 +177,18 @@ The dashboard below shows Monarch being used to monitor network slices for a clo
 
 ![rogers-demo-dashboard](images/rogers-demo-dashboard.png)
 
+## Citation
+![GitHub](https://img.shields.io/badge/IEEE%20NOMS-2023-green)
+
+If you use the code in this repository in your research work or project, please consider citing the following publication.
+
+> N. Saha, N. Shahriar, R. Boutaba and A. Saleh. (2023). MonArch: Network Slice Monitoring Architecture for Cloud Native 5G Deployments. In Proceedings of the IEEE/IFIP Network Operations and Management Symposium (NOMS). Miami, Florida, USA, 08 - 12 May, 2023.
+
+
+## Contributions
+Contributions, improvements to documentation,  and bug-fixes are always welcome!
+See [first-contributions](https://github.com/firstcontributions/first-contributions).
+
 
 
 
