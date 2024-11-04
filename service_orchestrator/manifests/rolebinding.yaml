@@ -1,0 +1,14 @@
+# rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: open5gs-read-pods
+  namespace: open5gs # Bind within the open5gs namespace
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: monarch # Service account in the monarch namespace
+roleRef:
+  kind: ClusterRole
+  name: open5gs-pod-reader
+  apiGroup: rbac.authorization.k8s.io

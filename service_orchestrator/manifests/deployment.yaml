@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-orchestrator
+  namespace: monarch
+  labels:
+    app: monarch
+    component: service-orchestrator
+spec:
+  selector:
+    matchLabels:
+      app: monarch
+      component: service-orchestrator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monarch
+        component: service-orchestrator
+    spec:
+      containers:
+        - image: ghcr.io/niloysh/service-orchestrator:v1.0.0
+          name: service-orchestrator
+          imagePullPolicy: Always
+          ports:
+            - name: api
+              containerPort: 5001
+          env:
+            - name: TEST
+              value: "1"
+          volumeMounts:
+            - mountPath: /service_orchestrator/slice_info.json
+              name: slice-info-volume
+              subPath: slice_info.json
+          command: ["/bin/bash", "-c", "--"]
+          args: ["python -u run.py"]
+          # args: ["while true; do sleep 30000000; done;"]
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+      restartPolicy: Always
+      volumes:
+        - name: slice-info-volume
+          configMap:
+            name: slice-info-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-orchestrator-service
+  namespace: monarch
+  labels:
+    app: monarch
+    component: service-orchestrator
+spec:
+  type: NodePort
+  ports:
+    - name: api # expose api port
+      port: 5001 # defined in chart
+      targetPort: api # port name in pod
+      nodePort: 30501
+  selector:
+    app: monarch # target pods
+    component: service-orchestrator

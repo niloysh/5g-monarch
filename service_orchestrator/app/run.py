@@ -1,8 +1,28 @@
+# ----------------------------------------------------------------------------
+# Author: Niloy Saha
+# Email: niloysaha.ns@gmail.com
+# version ='1.0.0'
+# ---------------------------------------------------------------------------
+"""
+Dummy Service Orchestrator
+======================
+This script provides a simple Service Orchestrator using Flask.
+It uses the Kubernetes API to get information about the NFs.
+
+Overview
+--------
+- Intended to be run on a Kubernetes control plane node to avoid loading kubeconfig.
+- The monitoring manager component can make HTTP requests to this orchestrator to get infomation on slice components.
+- Real service Orchestrators (e.g., ONAP) will have more complex logic and additional APIs.
+"""
 from flask import Flask, request, jsonify
 import os
 import json
 import logging
-import subprocess
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def setup_logger(name):
@@ -29,6 +49,11 @@ class DummyServiceOrchestrator:
         self.slice_info = self._load_slice_info("slice_info.json")
         self._set_routes()
 
+        # Kubernetes API server and token path
+        self.api_server = "https://kubernetes.default.svc"
+        self.token_path = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        self.ca_cert_path = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+
     def _set_routes(self):
         self.app.add_url_rule("/slices/<slice_id>", "get_slice_components", self.get_slice_components, methods=["GET"])
         self.app.add_url_rule("/api/health", "check_health", self.check_health, methods=["GET"])
@@ -48,11 +73,20 @@ class DummyServiceOrchestrator:
             return jsonify({"status": "error", "message": "Failed to retrieve slice components"}), 500
 
     def _get_pods_info(self):
-        cmd = ["kubectl", "get", "pods", "-n", "open5gs", "-o", "json"]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            raise RuntimeError(f"kubectl command failed: {result.stderr}")
-        pods_info = json.loads(result.stdout)
+        # Load the Kubernetes service account token
+        with open(self.token_path, "r") as file:
+            token = file.read().strip()
+
+        headers = {"Authorization": f"Bearer {token}"}
+        url = f"{self.api_server}/api/v1/namespaces/open5gs/pods"
+
+        # Make an API request to the Kubernetes API server
+        response = requests.get(url, headers=headers, verify=self.ca_cert_path)
+
+        if response.status_code != 200:
+            raise RuntimeError(f"Failed to get pods: {response.status_code} - {response.text}")
+
+        pods_info = response.json()
         return pods_info
 
     def _filter_response(self, response):

@@ -294,7 +294,19 @@ To deploy the Service Orchestrator, run:
 
 ```bash
 cd service_orchestrator
-python3 run.py
+./install.sh
+```
+You can verify that it is running with:
+```bash
+kubectl get pods -n monarch | grep service-orchestrator
+```
+Expected output:
+```bash
+service-orchestrator-7b9ffd8c5b-5twq7             1/1     Running   0              2m50s
+```
+Once it is running, you can check the logs:
+```bash
+kubectl logs service-orchestrator-7b9ffd8c5b-5twq7 -n monarch
 ```
 You should see an output similar to the following, indicating successful startup:
 ```bash
