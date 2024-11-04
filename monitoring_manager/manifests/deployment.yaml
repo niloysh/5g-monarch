@@ -18,8 +18,8 @@ spec:
         app: monarch
         component: monitoring-manager
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: nuc1
+      # nodeSelector:
+      #   kubernetes.io/hostname: nuc1
       containers:
         - image: ghcr.io/niloysh/monitoring-manager:v1.0.0
           name: monitoring-manager

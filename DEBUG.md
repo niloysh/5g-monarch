@@ -19,6 +19,13 @@ https://github.com/k8snetworkplumbingwg/multus-cni/issues/710#issue-977244895
 Multus can get OOMKilled.
 Increase resources for multus pods.
 
+## multus error after reboot
+
+```bash
+sudo rm /opt/cni/bin/multus-shim
+```
+then reboot
+
 ## prometheus crashloopbackoff
 Prometheus can get OOMKilled if it is collecting too many series.
 

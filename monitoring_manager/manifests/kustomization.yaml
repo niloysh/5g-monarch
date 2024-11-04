@@ -11,6 +11,6 @@ configMapGenerator:
   - name: monitoring-manager-configmap
     literals:
       - MONARCH_MONGO_URI=mongodb://datastore-mongodb.monarch.svc.cluster.local:27017
-      - NFV_ORCHESTRATOR_URI=http://129.97.168.40:6001
+      - NFV_ORCHESTRATOR_URI=http://10.0.2.15:6001
     options:
       disableNameSuffixHash: true

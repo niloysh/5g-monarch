@@ -38,7 +38,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
             },
             "fieldConfig": {
                 "defaults": {
@@ -120,9 +120,9 @@
                         "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
                     },
                     "editorMode": "code",
-                    "expr": "sum by (seid)(slice_throughput{direction=\"downlink\", snssai=\"1-000001\"})",
+                    "expr": "slice_throughput{direction=\"downlink\", snssai=\"1-000001\"}",
                     "instant": false,
-                    "legendFormat": "",
+                    "legendFormat": "seid={{seid}}",
                     "range": true,
                     "refId": "A"
                 }
@@ -133,7 +133,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
             },
             "fieldConfig": {
                 "defaults": {
@@ -215,9 +215,9 @@
                         "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
                     },
                     "editorMode": "code",
-                    "expr": "sum by (seid)(slice_throughput{direction=\"uplink\", snssai=\"1-000001\"})",
+                    "expr": "slice_throughput{direction=\"uplink\", snssai=\"1-000001\"}",
                     "instant": false,
-                    "legendFormat": "",
+                    "legendFormat": "seid={{seid}}",
                     "range": true,
                     "refId": "A"
                 }
@@ -241,12 +241,12 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
             },
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "palette-classic"
+                        "mode": "palette-classic-by-name"
                     },
                     "custom": {
                         "axisCenteredZero": false,
@@ -295,32 +295,7 @@
                     },
                     "unit": "Bps"
                 },
-                "overrides": [
-                    {
-                        "__systemRef": "hideSeriesFrom",
-                        "matcher": {
-                            "id": "byNames",
-                            "options": {
-                                "mode": "exclude",
-                                "names": [
-                                    "{seid=\"3875\"}"
-                                ],
-                                "prefix": "All except:",
-                                "readOnly": true
-                            }
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.hideFrom",
-                                "value": {
-                                    "legend": false,
-                                    "tooltip": false,
-                                    "viz": true
-                                }
-                            }
-                        ]
-                    }
-                ]
+                "overrides": []
             },
             "gridPos": {
                 "h": 8,
@@ -348,9 +323,9 @@
                         "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
                     },
                     "editorMode": "code",
-                    "expr": "sum by (seid)(slice_throughput{direction=\"downlink\", snssai=\"2-000002\"})",
+                    "expr": "slice_throughput{direction=\"downlink\", snssai=\"2-000002\"}",
                     "instant": false,
-                    "legendFormat": "",
+                    "legendFormat": "seid={{seid}}",
                     "range": true,
                     "refId": "A"
                 }
@@ -361,12 +336,12 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
             },
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "palette-classic"
+                        "mode": "palette-classic-by-name"
                     },
                     "custom": {
                         "axisCenteredZero": false,
@@ -443,9 +418,9 @@
                         "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
                     },
                     "editorMode": "code",
-                    "expr": "sum by (seid)(slice_throughput{direction=\"uplink\", snssai=\"2-000002\"})",
+                    "expr": "slice_throughput{direction=\"uplink\", snssai=\"2-000002\"}",
                     "instant": false,
-                    "legendFormat": "",
+                    "legendFormat": "seid={{seid}}",
                     "range": true,
                     "refId": "A"
                 }
@@ -454,7 +429,7 @@
             "type": "timeseries"
         }
     ],
-    "refresh": "auto",
+    "refresh": "1s",
     "schemaVersion": 38,
     "style": "dark",
     "tags": [],
