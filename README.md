@@ -288,8 +288,7 @@ pip3 install -r requirements.txt
 ```
 
 #### 2. Deploy Service Orchestrator
-The Service Orchestrator is a mock component that simulates the basic functionality of the actual service orchestrator (e.g., [ONAP](https://www.onap.org/)). This should remain running in the background to ensure continuous communication with Monarch components. We recommend using screen or tmux to keep it active in a separate session.
-
+The Service Orchestrator is a mock component that simulates the basic functionality of the actual service orchestrator (e.g., [ONAP](https://www.onap.org/)). 
 To deploy the Service Orchestrator, run:
 
 ```bash
@@ -313,8 +312,7 @@ You should see an output similar to the following, indicating successful startup
 2024-11-01 12:03:14,409 - service_orchestrator - INFO - Service Orchestrator started
 2024-11-01 12:03:14,410 - service_orchestrator - INFO - Slice info loaded: {'1-000001': [{'nf': 'upf1', 'nss': 'edge'}, {'nf': 'smf1', 'nss': 'core'}], '2-000002': [{'nf': 'upf2', 'nss': 'edge'}, {'nf': 'smf2', 'nss': 'core'}]}
 ```
-> [!WARNING]
-> Keep the service orchestrator running! 
+
 
 **Verify the Service orchestrator Health**
 
@@ -339,12 +337,15 @@ A successful response will resemble:
     },
 ```
 #### 3. Deploy NFV Orchestrator
-Next, deploy the NFV Orchestrator, another mock component that simulates NFV orchestration functionalities. Run it with the command:
+Next, deploy the NFV Orchestrator, another mock component that simulates NFV orchestration functionalities. This should remain running in the background to ensure continuous communication with Monarch components. We recommend leaving it running in a separate terminal. 
+Run it with the command:
 ```bash
 cd nfv_orchestrator
 python3 run.py
 ```
-Ensure this component remains active, as it will be essential for interactions with the monitoring_manager and other Monarch modules.
+
+> [!WARNING]
+> Keep the nfv orchestrator running in this terminal, as it will be essential for interactions with the monitoring_manager and other Monarch modules! 
 
 ### Step 7: Deploy the Monitoring Manager
 
@@ -387,7 +388,7 @@ Next, we  will deploy the [request_translator](request_translator) component.
 
 Add the following environment variable to your .env file, replacing <node_ip> with the actual IP address:
 ```bash
-SERVICE_ORCHESTRATOR_URI="http://<node_ip>:5001"
+SERVICE_ORCHESTRATOR_URI="http://<node_ip>:30501"
 ```
 #### 2. Deploy the Request Translator component
 Navigate to the `request_translator` directory and run the `install.sh` script:
