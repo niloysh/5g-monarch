@@ -1,2 +1,5 @@
 flask
 requests
+numpy
+python-dotenv
+prometheus_client

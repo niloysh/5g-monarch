@@ -64,7 +64,7 @@ nodeExporter:
   enabled: false
 
 kubeStateMetrics:
-  enabled: false
+  enabled: true
 
 kubeApiServer:
   enabled: false
@@ -85,11 +85,11 @@ kubeScheduler:
   enabled: false
 
 kubelet:
-  enabled: false
+  enabled: true
 
 prometheusOperator:
   kubeletService:
-    enabled: false
+    enabled: true
 
 prometheus-node-exporter:
   prometheus:
