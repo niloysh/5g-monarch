@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import os
 import logging
 
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 def setup_logger(name):
     logger = logging.getLogger(name)
@@ -39,28 +41,28 @@ class DummyNFVOrchestrator:
         self.app.add_url_rule("/api/health", "check_health", self.check_health, methods=["GET"])
 
     def mde_install(self):
-        return_value = os.system("../mde/install.sh")
+        return_value = os.system(f"{WORKING_DIR}/../mde/install.sh")
         if return_value != 0:
             return jsonify({"status": "error", "message": "MDE installation failed"}), 500
         else:
             return jsonify({"status": "success", "message": "MDE installed"}), 200
 
     def mde_uninstall(self):
-        return_value = os.system("../mde/uninstall.sh")
+        return_value = os.system(f"{WORKING_DIR}/../mde/uninstall.sh")
         if return_value != 0:
             return jsonify({"status": "error", "message": "MDE uninstallation failed"}), 500
         else:
             return jsonify({"status": "success", "message": "MDE uninstalled"}), 200
 
     def kpi_computation_install(self):
-        return_value = os.system("../kpi_computation/install.sh")
+        return_value = os.system(f"{WORKING_DIR}/../kpi_computation/install.sh")
         if return_value != 0:
             return jsonify({"status": "error", "message": "KPI Computation installation failed"}), 500
         else:
             return jsonify({"status": "success", "message": "KPI Computation installed"}), 200
 
     def kpi_computation_uninstall(self):
-        return_value = os.system("../kpi_computation/uninstall.sh")
+        return_value = os.system(f"{WORKING_DIR}/../kpi_computation/uninstall.sh")
         if return_value != 0:
             return jsonify({"status": "error", "message": "KPI Computation uninstallation failed"}), 500
         else:

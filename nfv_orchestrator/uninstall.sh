@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVICE_NAME="service_orchestrator"
+SERVICE_NAME="nfv_orchestrator"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 
 # Check if the service file exists

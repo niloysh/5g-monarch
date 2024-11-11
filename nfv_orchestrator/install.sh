@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables
-SERVICE_NAME="service_orchestrator"
+SERVICE_NAME="nfv_orchestrator"
 USER="$(whoami)"
 WORKING_DIR="$(pwd)"
-SCRIPT_NAME="service-orchestrator.py"
+SCRIPT_NAME="nfv-orchestrator.py"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 PYTHON_PATH="$(which python3)"
 
@@ -19,7 +19,7 @@ echo "Creating systemd service file at ${SERVICE_FILE}..."
 
 sudo bash -c "cat > ${SERVICE_FILE}" <<EOL
 [Unit]
-Description=Service Orchestrator Service
+Description=NFV Orchestrator Service
 After=network.target
 
 [Service]
@@ -45,3 +45,6 @@ sudo systemctl enable ${SERVICE_NAME}
 # Check the status of the service
 echo "Checking the ${SERVICE_NAME} service status..."
 sudo systemctl status ${SERVICE_NAME} --no-pager
+
+# Install the CRDs needed for NFVO to work
+kubectl apply -f crd-servicemonitor.yaml

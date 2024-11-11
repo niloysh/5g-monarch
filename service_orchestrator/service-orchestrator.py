@@ -20,9 +20,13 @@ import os
 import json
 import logging
 import requests
+import subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
+
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
+SLICE_INFO_PATH = os.path.join(WORKING_DIR, 'slice_info.json')
 
 
 def setup_logger(name):
@@ -46,13 +50,8 @@ class DummyServiceOrchestrator:
         self.logger = setup_logger("service_orchestrator")
         self.logger.info("Service Orchestrator started")
         self.app = Flask(__name__)
-        self.slice_info = self._load_slice_info("slice_info.json")
+        self.slice_info = self._load_slice_info(SLICE_INFO_PATH)
         self._set_routes()
-
-        # Kubernetes API server and token path
-        self.api_server = "https://kubernetes.default.svc"
-        self.token_path = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-        self.ca_cert_path = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 
     def _set_routes(self):
         self.app.add_url_rule("/slices/<slice_id>", "get_slice_components", self.get_slice_components, methods=["GET"])
@@ -73,20 +72,11 @@ class DummyServiceOrchestrator:
             return jsonify({"status": "error", "message": "Failed to retrieve slice components"}), 500
 
     def _get_pods_info(self):
-        # Load the Kubernetes service account token
-        with open(self.token_path, "r") as file:
-            token = file.read().strip()
-
-        headers = {"Authorization": f"Bearer {token}"}
-        url = f"{self.api_server}/api/v1/namespaces/open5gs/pods"
-
-        # Make an API request to the Kubernetes API server
-        response = requests.get(url, headers=headers, verify=self.ca_cert_path)
-
-        if response.status_code != 200:
-            raise RuntimeError(f"Failed to get pods: {response.status_code} - {response.text}")
-
-        pods_info = response.json()
+        cmd = ["kubectl", "get", "pods", "-n", "open5gs", "-o", "json"]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"kubectl command failed: {result.stderr}")
+        pods_info = json.loads(result.stdout)
         return pods_info
 
     def _filter_response(self, response):
