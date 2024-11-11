@@ -7,3 +7,5 @@ MODULE_NAME="dataviz"
 
 helm uninstall $MODULE_NAME \
         --namespace $NAMESPACE \
+
+kubectl delete -k .

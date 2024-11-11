@@ -4,8 +4,8 @@
             {
                 "builtIn": 1,
                 "datasource": {
-                    "type": "grafana",
-                    "uid": "-- Grafana --"
+                    "type": "prometheus",
+                    "uid": "JOSE3g9KVz"
                 },
                 "enable": true,
                 "hide": true,
@@ -38,7 +38,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
+                "uid": "JOSE3g9KVz"
             },
             "fieldConfig": {
                 "defaults": {
@@ -117,10 +117,10 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                        "uid": "JOSE3g9KVz"
                     },
                     "editorMode": "code",
-                    "expr": "slice_throughput{direction=\"downlink\", snssai=\"1-000001\"}",
+                    "expr": "slice_throughput{direction=\"downlink\",snssai=\"1-000001\"}",
                     "instant": false,
                     "legendFormat": "seid={{seid}}",
                     "range": true,
@@ -133,7 +133,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
+                "uid": "JOSE3g9KVz"
             },
             "fieldConfig": {
                 "defaults": {
@@ -212,10 +212,10 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                        "uid": "JOSE3g9KVz"
                     },
                     "editorMode": "code",
-                    "expr": "slice_throughput{direction=\"uplink\", snssai=\"1-000001\"}",
+                    "expr": "slice_throughput{direction=\"uplink\",snssai=\"1-000001\"}",
                     "instant": false,
                     "legendFormat": "seid={{seid}}",
                     "range": true,
@@ -241,7 +241,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
+                "uid": "JOSE3g9KVz"
             },
             "fieldConfig": {
                 "defaults": {
@@ -320,10 +320,10 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                        "uid": "JOSE3g9KVz"
                     },
                     "editorMode": "code",
-                    "expr": "slice_throughput{direction=\"downlink\", snssai=\"2-000002\"}",
+                    "expr": "slice_throughput{direction=\"downlink\",snssai=\"2-000002\"}",
                     "instant": false,
                     "legendFormat": "seid={{seid}}",
                     "range": true,
@@ -336,7 +336,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "efde4192-6b5c-4bd3-b7ac-d86175b5fb31"
+                "uid": "JOSE3g9KVz"
             },
             "fieldConfig": {
                 "defaults": {
@@ -418,7 +418,7 @@
                         "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
                     },
                     "editorMode": "code",
-                    "expr": "slice_throughput{direction=\"uplink\", snssai=\"2-000002\"}",
+                    "expr": "slice_throughput{direction=\"uplink\",snssai=\"2-000002\"}",
                     "instant": false,
                     "legendFormat": "seid={{seid}}",
                     "range": true,

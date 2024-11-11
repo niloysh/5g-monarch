@@ -13,8 +13,17 @@ grafana:
       min_refresh_interval: 1s
   sidecar:
     datasources:
-        enabled: false
-        defaultDatasourceEnabled: true
+      enabled: true
+      defaultDatasourceEnabled: true
+      isDefaultDatasource: false
+      name: monarch-thanos
+      type: prometheus
+      uid: JOSE3g9KVz
+      url: http://${NODE_IP}:31004
+    dashboards:
+      enabled: true
+      
+
 
 prometheus:
   enabled: false
