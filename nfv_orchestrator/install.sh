@@ -45,6 +45,3 @@ sudo systemctl enable ${SERVICE_NAME}
 # Check the status of the service
 echo "Checking the ${SERVICE_NAME} service status..."
 sudo systemctl status ${SERVICE_NAME} --no-pager
-
-# Install the CRDs needed for NFVO to work
-kubectl apply -f crd-servicemonitor.yaml

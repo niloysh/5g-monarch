@@ -34,4 +34,4 @@ cd $WORKING_DIR/service_orchestrator
 cd $WORKING_DIR/nfv_orchestrator
 ./uninstall.sh
 
-print_success "External components deployed."
+print_success "External components removed."

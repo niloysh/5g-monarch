@@ -55,7 +55,7 @@ print_success "Data Visualization removed."
 print_header "Removing Monitoring Manager (Monarch Core [4/5])"
 cd $WORKING_DIR/monitoring_manager
 ./uninstall.sh
-wait_for_pod_ready "app.kubernetes.io/component" "monitoring-manager"
+wait_for_pod_deletion "app.kubernetes.io/component" "monitoring-manager"
 print_success "Monitoring manager removed."
 
 print_header "Removing Request Translator (Monarch Core [5/5])"

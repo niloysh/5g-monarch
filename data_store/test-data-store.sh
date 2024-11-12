@@ -51,14 +51,14 @@ else
     exit 1
 fi
 
-# List contents of the monarch-thanos bucket
-print_subheader "Listing contents of 'monarch-thanos' bucket"
-bucket_contents=$(mc ls myminio/monarch-thanos)
+print_subheader "Listing S3 buckets"
+bucket_contents=$(mc ls myminio)
 
 if [ -n "$bucket_contents" ]; then
-    print_success "Successfully listed contents of 'monarch-thanos' bucket."
+    print_success "Successfully listed S3 buckets."
     print_info "$bucket_contents"
+    echo "Note that monitoring data is uploaded to S3 buckets every 2 hours."
 else
-    print_info "Failed to list contents of 'monarch-thanos' bucket. It may be empty. S3 objects are uploaded every 2 hours."
+    print_info "Failed to list buckets. Buckets may be empty before NSSDC deployment."
     exit 1
 fi

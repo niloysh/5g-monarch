@@ -1,7 +1,8 @@
 #!/bin/bash
-KUBE_PROMETHEUS_STACK_VER="51.9.4"
-HELM_REPO_URL="https://prometheus-community.github.io/helm-charts"
-HELM_REPO_NAME="prometheus-community"
+CHART_VERSION="8.6.0"
+HELM_REPO_URL="https://grafana.github.io/helm-charts"
+HELM_REPO_NAME="grafana"
+HELM_CHART_NAME="grafana"
 NAMESPACE="monarch"
 MODULE_NAME="dataviz"
 

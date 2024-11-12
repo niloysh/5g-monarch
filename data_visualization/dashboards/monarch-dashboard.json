@@ -5,7 +5,7 @@
                 "builtIn": 1,
                 "datasource": {
                     "type": "prometheus",
-                    "uid": "JOSE3g9KVz"
+                    "uid": "monarch-thanos"
                 },
                 "enable": true,
                 "hide": true,
@@ -38,7 +38,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "JOSE3g9KVz"
+                "uid": "monarch-thanos"
             },
             "fieldConfig": {
                 "defaults": {
@@ -117,7 +117,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "JOSE3g9KVz"
+                        "uid": "monarch-thanos"
                     },
                     "editorMode": "code",
                     "expr": "slice_throughput{direction=\"downlink\",snssai=\"1-000001\"}",
@@ -133,7 +133,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "JOSE3g9KVz"
+                "uid": "monarch-thanos"
             },
             "fieldConfig": {
                 "defaults": {
@@ -212,7 +212,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "JOSE3g9KVz"
+                        "uid": "monarch-thanos"
                     },
                     "editorMode": "code",
                     "expr": "slice_throughput{direction=\"uplink\",snssai=\"1-000001\"}",
@@ -241,7 +241,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "JOSE3g9KVz"
+                "uid": "monarch-thanos"
             },
             "fieldConfig": {
                 "defaults": {
@@ -320,7 +320,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "JOSE3g9KVz"
+                        "uid": "monarch-thanos"
                     },
                     "editorMode": "code",
                     "expr": "slice_throughput{direction=\"downlink\",snssai=\"2-000002\"}",
@@ -336,7 +336,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "JOSE3g9KVz"
+                "uid": "monarch-thanos"
             },
             "fieldConfig": {
                 "defaults": {
@@ -415,7 +415,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "c5b49520-9449-41e1-9e6a-0e8b05d7b729"
+                        "uid": "monarch-thanos"
                     },
                     "editorMode": "code",
                     "expr": "slice_throughput{direction=\"uplink\",snssai=\"2-000002\"}",

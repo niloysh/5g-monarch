@@ -2,7 +2,7 @@
 GRAFANA_URL="http://localhost:32005"
 DASHBOARD_UID="f1471646-a245-4f23-a3e1-452baa6558c8"
 USERNAME="admin"
-PASSWORD="prom-operator"
+PASSWORD="monarch-operator"
 
 
 print_subheader() {

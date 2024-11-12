@@ -53,14 +53,12 @@ if [ -z "$response" ]; then
     exit 1
 fi
 
-# Check if "sidecar" store exists and print its info if found
-sidecar_exists=$(echo "$response" | jq -r '.data.store[] | select(.name == "sidecar")')
+# Check if "sidecar" exists and print its info if found
+sidecar_exists=$(echo "$response" | jq -r '.data.sidecar[]')
 
 if [ -z "$sidecar_exists" ]; then
-    print_info "Sidecar store should be discovered after deploying NSSDC."
+    print_info "Sidecar(s) should be discovered after deploying NSSDC."
 else
-    print_success "Sidecar store found:"
-
-    # Print details of the sidecar store
-    echo "$sidecar_exists" | jq -r '"Endpoint: \(.name), Status: \(.lastError // "null" | if . == "null" then "UP" else "DOWN" end), Replica: \(.labelSets[0].replica // "N/A")"'
+    print_success "NSSDC Sidecar(s) found:"
+    echo "$sidecar_exists" | jq -r '"Endpoint: \(.name), Status: \(.lastError // "null" | if . == "null" then "UP" else "DOWN" end), Cluster: \(.labelSets[0].cluster // "N/A")"'
 fi
