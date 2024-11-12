@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import os
 import logging
+import subprocess
+import json
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -32,11 +34,15 @@ class DummyNFVOrchestrator:
     def _set_routes(self):
         self.app.add_url_rule("/mde/install", "mde_install", self.mde_install, methods=["POST"])
         self.app.add_url_rule("/mde/uninstall", "mde_uninstall", self.mde_uninstall, methods=["POST"])
+        self.app.add_url_rule("/mde/check", "mde_check", self.mde_check, methods=["POST"])
         self.app.add_url_rule(
             "/kpi-computation/install", "kpi_computation_install", self.kpi_computation_install, methods=["POST"]
         )
         self.app.add_url_rule(
             "/kpi-computation/uninstall", "kpi_computation_uninstall", self.kpi_computation_uninstall, methods=["POST"]
+        )
+        self.app.add_url_rule(
+            "/kpi-computation/check", "kpi_computation_check", self.kpi_computation_check, methods=["POST"]
         )
         self.app.add_url_rule("/api/health", "check_health", self.check_health, methods=["GET"])
 
@@ -54,6 +60,19 @@ class DummyNFVOrchestrator:
         else:
             return jsonify({"status": "success", "message": "MDE uninstalled"}), 200
 
+    def mde_check(self):
+        try:
+            # Run the command and capture output
+            result = subprocess.run(
+                [f"{WORKING_DIR}/../mde/check-mde.sh"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return jsonify({"status": "success", "message": "MDE test success", "output": result.stdout}), 200
+        except subprocess.CalledProcessError as e:
+            return jsonify({"status": "error", "message": "MDE test failed", "output": e.stderr}), 500
+
     def kpi_computation_install(self):
         return_value = os.system(f"{WORKING_DIR}/../kpi_computation/install.sh")
         if return_value != 0:
@@ -67,6 +86,19 @@ class DummyNFVOrchestrator:
             return jsonify({"status": "error", "message": "KPI Computation uninstallation failed"}), 500
         else:
             return jsonify({"status": "success", "message": "KPI Computation uninstalled"}), 200
+
+    def kpi_computation_check(self):
+        try:
+            # Run the command and capture output
+            result = subprocess.run(
+                [f"{WORKING_DIR}/../kpi_computation/check-kpi.sh"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return jsonify({"status": "success", "message": "KPI test success", "output": result.stdout}), 200
+        except subprocess.CalledProcessError as e:
+            return jsonify({"status": "error", "message": "KPI test failed", "output": e.stderr}), 500
 
     def check_health(self):
         return jsonify({"status": "success", "message": "NFV Orchestrator is healthy"}), 200

@@ -5,6 +5,7 @@ metadata:
   namespace: open5gs
   labels:
     nf: amf
+    app: monarch
 spec:
   ports:
     - name: metrics # expose metrics port
@@ -19,6 +20,7 @@ metadata:
   namespace: open5gs
   labels:
     nf: smf
+    app: monarch
 spec:
   clusterIP: None
   ports:
@@ -34,6 +36,7 @@ metadata:
   namespace: open5gs
   labels:
     nf: upf
+    app: monarch
 spec:
   clusterIP: None
   ports:
