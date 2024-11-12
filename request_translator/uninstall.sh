@@ -6,5 +6,5 @@ cd "$SCRIPT_DIR"
 set -o allexport; source ../.env; set +o allexport
 kubectl get namespace $NAMESPACE 2>/dev/null || kubectl create namespace $NAMESPACE
 kubectl delete configmap slice-components-configmap -n $NAMESPACE
-envsubst < manifests/deployment.yaml | kubectl apply -f -
-envsubst < manifests/service.yaml | kubectl apply -f -
+envsubst < manifests/deployment.yaml | kubectl delete -f -
+envsubst < manifests/service.yaml | kubectl delete -f -

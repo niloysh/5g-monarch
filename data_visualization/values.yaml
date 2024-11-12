@@ -34,3 +34,10 @@ dashboardProviders:
 
 dashboardsConfigMaps:
   default: monarch-dashboard-configmap
+
+grafana.ini:
+  dashboards:
+    min_refresh_interval: 1s
+  users:
+    default_theme: light
+    viewers_can_edit: true

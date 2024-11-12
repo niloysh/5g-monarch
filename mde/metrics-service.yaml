@@ -6,6 +6,11 @@ metadata:
   labels:
     nf: amf
     app: monarch
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io.scheme: "http"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9090"
 spec:
   ports:
     - name: metrics # expose metrics port
@@ -21,6 +26,11 @@ metadata:
   labels:
     nf: smf
     app: monarch
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io.scheme: "http"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9090"
 spec:
   clusterIP: None
   ports:
@@ -37,6 +47,11 @@ metadata:
   labels:
     nf: upf
     app: monarch
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io.scheme: "http"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "9090"
 spec:
   clusterIP: None
   ports:

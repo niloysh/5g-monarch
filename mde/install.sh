@@ -5,4 +5,4 @@ cd "$SCRIPT_DIR"
 kubectl get namespace $NAMESPACE 2>/dev/null || kubectl create namespace $NAMESPACE
 set -o allexport; source ../.env; set +o allexport
 kubectl apply -f metrics-service.yaml
-envsubst < standard/metrics-servicemonitor.yaml | kubectl apply -f -
+# envsubst < standard/metrics-servicemonitor.yaml | kubectl apply -f -

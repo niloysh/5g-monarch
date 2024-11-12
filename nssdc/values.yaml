@@ -55,10 +55,24 @@ prometheus:
         key: thanos.yaml
         name: thanos-objstore-config
 
-    additionalScrapeConfigsSecret:
-      enabled: true
-      name: additional-scrape-configs
-      key: additional-scrape-configs.yaml
+    # additionalScrapeConfigsSecret:
+    #   enabled: true
+    #   name: additional-scrape-configs
+    #   key: additional-scrape-configs.yaml
+    
+    additionalScrapeConfigs:
+      - job_name: "monarch-service"
+        scrape_interval: 1s
+        kubernetes_sd_configs:
+          - role: service
+            namespaces:
+              names:
+              - 'open5gs'
+              - 'monarch'
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
 
 nodeExporter:
   enabled: false

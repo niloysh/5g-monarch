@@ -429,7 +429,7 @@
             "type": "timeseries"
         }
     ],
-    "refresh": "1s",
+    "refresh": "auto",
     "schemaVersion": 38,
     "style": "dark",
     "tags": [],
@@ -440,7 +440,21 @@
         "from": "now-5m",
         "to": "now"
     },
-    "timepicker": {},
+    "timepicker": {
+        "refresh_intervals": [
+            "1s",
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ]
+    },
     "timezone": "",
     "title": "Monarch Dashboard",
     "uid": "f1471646-a245-4f23-a3e1-452baa6558c8",
