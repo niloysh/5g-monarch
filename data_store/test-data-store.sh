@@ -52,7 +52,7 @@ else
 fi
 
 print_subheader "Listing S3 buckets"
-bucket_contents=$(mc ls myminio)
+bucket_contents=$(mc ls --recursive myminio)
 
 if [ -n "$bucket_contents" ]; then
     print_success "Successfully listed S3 buckets."

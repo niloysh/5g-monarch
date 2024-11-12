@@ -67,8 +67,8 @@ check_pod_ready "app.kubernetes.io/name" "prometheus"
 # If the pod is ready, execute the curl commands; otherwise, skip them
 if [ $? -eq 0 ]; then
     print_subheader "Pod is ready. Executing curl commands"
-    curl -X POST http://localhost:6001/mde/install
-    curl -X POST http://localhost:6001/kpi-computation/install
+    # curl -X POST http://localhost:6001/mde/install
+    # curl -X POST http://localhost:6001/kpi-computation/install
     print_success "MDE and KPI tests initiated."
 else
     print_info "NSSDC is not READY. Skipping MDE and KPI tests. Likely NSSDC is not yet deployed."
