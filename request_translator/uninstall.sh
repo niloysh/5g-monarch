@@ -5,4 +5,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 set -o allexport; source ../.env; set +o allexport
 kubectl get namespace $NAMESPACE 2>/dev/null || kubectl create namespace $NAMESPACE
-kubectl delete --wait=true -k manifests/ -n monarch
+kubectl delete configmap slice-components-configmap -n $NAMESPACE
+envsubst < manifests/deployment.yaml | kubectl apply -f -
+envsubst < manifests/service.yaml | kubectl apply -f -

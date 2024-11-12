@@ -12,8 +12,8 @@ if [ -z "$SERVICE_ORCHESTRATOR_URI" ]; then
   exit 1
 fi
 
-# Replace placeholder in kustomization.yaml with the actual URI
-sed -i "s|SERVICE_ORCHESTRATOR_URI=.*|SERVICE_ORCHESTRATOR_URI=$SERVICE_ORCHESTRATOR_URI|g" "$KUSTOMIZATION_FILE"
-
 kubectl get namespace $NAMESPACE 2>/dev/null || kubectl create namespace $NAMESPACE
-kubectl apply -k manifests/ -n monarch
+
+kubectl create configmap slice-components-configmap --from-file=slice_components.json -n $NAMESPACE
+envsubst < manifests/deployment.yaml | kubectl apply -f -
+envsubst < manifests/service.yaml | kubectl apply -f -

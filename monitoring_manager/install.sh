@@ -12,6 +12,6 @@ if [ -z "$NFV_ORCHESTRATOR_URI" ]; then
     exit 1
 fi
 
-sed -i.bak "s|NFV_ORCHESTRATOR_URI=http://<node_ip>:6001|NFV_ORCHESTRATOR_URI=${NFV_ORCHESTRATOR_URI}|g" manifests/kustomization.yaml && rm manifests/kustomization.yaml.bak
+envsubst < manifests/deployment.yaml | kubectl apply -f -
+envsubst < manifests/service.yaml | kubectl apply -f -
 
-kubectl apply -k manifests/ -n monarch

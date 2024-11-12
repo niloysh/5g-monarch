@@ -30,9 +30,11 @@ spec:
           command: ["/bin/bash", "-c", "--"]
           args: ["python -u run.py"]
           # args: ["while true; do sleep 30000000; done;"]
-          envFrom:
-            - configMapRef:
-                name: monitoring-manager-configmap
+          env:
+            - name: MONARCH_MONGO_URI
+              value: mongodb://datastore-mongodb.monarch.svc.cluster.local:27017
+            - name: NFV_ORCHESTRATOR_URI
+              value: ${NFV_ORCHESTRATOR_URI}
           resources:
             requests:
               memory: "100Mi"

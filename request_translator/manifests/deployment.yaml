@@ -28,9 +28,13 @@ spec:
           command: ["/bin/bash", "-c", "--"]
           args: ["python -u run.py"]
           # args: ["while true; do sleep 30000000; done;"]
-          envFrom:
-            - configMapRef:
-                name: request-translator-configmap
+          env:
+            - name: MONITORING_MANAGER_URI
+              value: http://monitoring-manager-service.monarch.svc.cluster.local:6000
+            - name: MONARCH_MONGO_URI
+              value: mongodb://datastore-mongodb.monarch.svc.cluster.local:27017
+            - name: SERVICE_ORCHESTRATOR_URI
+              value: ${SERVICE_ORCHESTRATOR_URI}
           resources:
             requests:
               memory: "100Mi"
