@@ -25,7 +25,7 @@ Use the `cd` command to ensure you’re starting from your home directory.
 **2. Clone the Monarch repository**
 Use `git clone` to fetch the source code from the Monarch GitHub repository.
 ```bash
-git clone git@github.com:niloysh/5g-monarch.git
+git clone https://github.com/niloysh/5g-monarch.git
 cd 5g-monarch
 ```
 **3. Set Up Environment Variables**
