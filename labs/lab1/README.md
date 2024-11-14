@@ -156,7 +156,7 @@ kubectl exec -it deployments/prom-exporter -n monarch -- /bin/bash
 ```
 ---
 # Checking Metrics
-Since our pod is exposing metrics on port 8000, we can check that using
+Since our pod is exposing metrics on port 8000, we can check that using:
 ```bash
 curl http://localhost:8000
 ```
