@@ -22,6 +22,7 @@ The figure above shows the conceptual architecture of Monarch. Monarch is design
     - [Step 1: Deploy a 5G Network with Network Slicing Support](#step-1-deploy-a-5g-network-with-network-slicing-support)
     - [Step 2: Verify Network Slice Deployment](#step-2-verify-network-slice-deployment)
 - [Quick Start](#quick-start)
+  - [Detailed Deployment Guide](#detailed-deployment-guide)
 - [Visualizing network slices KPIs using Monarch](#visualizing-network-slices-kpis-using-monarch)
 - [Citation](#citation)
 - [Contributions](#contributions)
@@ -45,12 +46,17 @@ The [open5gs-k8s](https://github.com/niloysh/open5gs-k8s) repository contains th
 After deploying the 5G network, ensure that two network slices have been successfully configured by performing a [ping test to verify connectivity](https://github.com/niloysh/open5gs-k8s?tab=readme-ov-file#step-5-test-connectivity). This step confirms that the network is functioning correctly and is ready for Monarch deployment.
 
 # Quick Start
+To quickly set up the Monarch system, follow these steps:
 
 ```bash
 git clone https://github.com/niloysh/5g-monarch.git
 cd 5g-monarch
 ./deploy-all.sh
 ```
+This script will deploy all core and external components needed for Monarch in a single step.
+
+## Detailed Deployment Guide
+For a step-by-step deployment process, including individual component setup and configuration, refer to the [deployment slides](https://niloysh.github.io/5g-monarch/slides.pdf).
 
 # Visualizing network slices KPIs using Monarch
 

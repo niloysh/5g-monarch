@@ -24,7 +24,7 @@ We can query our metrics using Thanos Querier's HTTP API.
 ---
 # Using the Thanos HTTP API with Python (2/3)
 
-1.	Open [exercise.py](exercise.py): This file contains a skeleton of code for **Tasks 1 through 3**.
+1.	Open `labs/lab3/exercise.py`: This file contains a skeleton of code for **Tasks 1 through 3**.
 2.	Structure of the Exercise Code:
 	- `query_prometheus`: Sends a Prometheus query to the Thanos HTTP API.
 	- `parse_numeric_value_from_prometheus_response`: Parses numeric results from the API response.
@@ -66,7 +66,7 @@ Monarch's KPI computation module leverages the Python HTTP API to query raw metr
 
 
 **Task**: 
-- Task 3 of [exercise.py](exercise.py) dives deeper into composing slice-level metrics, specifically focusing on calculating resource utilization for slice 1 (with `SNSSAI=1-000001`). 
+- Task 3 of `labs/lab3/exercise.py` dives deeper into composing slice-level metrics, specifically focusing on calculating resource utilization for slice 1 (with `SNSSAI=1-000001`). 
 - You'll combine multiple queries to determine memory usage, providing a practical understanding of how to build KPIs from various metric sources.
 
 ---
