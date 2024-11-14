@@ -259,7 +259,7 @@ You've successfully completed the following:
 - Visualized slice KPIs in Grafana.
 
 **What's Next?**
-Continue to [Lab 1](../lab1/README.md) to learn about using instrumenting applications with metrics support and querying metrics.
+Continue to [Lab 1](https://niloysh.github.io/5g-monarch/labs/lab1/README.pdf) to learn about using instrumenting applications with metrics support and querying metrics.
 
 
 

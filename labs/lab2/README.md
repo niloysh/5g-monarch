@@ -178,4 +178,4 @@ You've successfully completed the following:
 - Explored 5G metrics scraped by Prometheus.
 
 **What's Next?**
-Continue to [Lab 3](../lab3/README.md) to learn about using Prometheus HTTP API using Python to easily execute more complex operations.
+Continue to [Lab 3](https://niloysh.github.io/5g-monarch/labs/lab3/README.pdf) to learn about using Prometheus HTTP API using Python to easily execute more complex operations.

@@ -202,4 +202,4 @@ You've successfully completed the following:
 - Configured a Kubernetes service that enables Prometheus to automatically discover and scrape the target.
 
 **What's Next?**
-Continue to [Lab 2](../lab2/README.md) to learn the basics of querying and extracting insights from the collected metrics.
+Continue to [Lab 2](https://niloysh.github.io/5g-monarch/labs/lab2/README.pdf) to learn the basics of querying and extracting insights from the collected metrics.

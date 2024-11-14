@@ -17,9 +17,8 @@ The figure above shows the conceptual architecture of Monarch. Monarch is design
 - [5G-Monarch](#5g-monarch)
   - [Downloads](#downloads)
   - [Table of Contents](#table-of-contents)
-- [Requirements](#requirements)
-  - [Hardware](#hardware)
-  - [5G network](#5g-network)
+- [Hardware Requirements](#hardware-requirements)
+- [Prerequisites](#prerequisites)
     - [Step 1: Deploy a 5G Network with Network Slicing Support](#step-1-deploy-a-5g-network-with-network-slicing-support)
     - [Step 2: Verify Network Slice Deployment](#step-2-verify-network-slice-deployment)
 - [Quick Start](#quick-start)
@@ -27,17 +26,12 @@ The figure above shows the conceptual architecture of Monarch. Monarch is design
 - [Citation](#citation)
 - [Contributions](#contributions)
 
-# Requirements
-
-## Hardware
+# Hardware Requirements
 - Supported OS: **Ubuntu 22.04 LTS** (recommended) or Ubuntu 20.04 LTS
-- Minimum Specifications: **8 cores, 8 GB RAM**
+- Minimum Specifications: **8 cores, 16 GB RAM**
 
 
-## 5G network
-![Static Badge](https://img.shields.io/badge/open5gs-v2.7.0-green)
-![Static Badge](https://img.shields.io/badge/ueransim-v3.2.6-green)
-![Static Badge](https://img.shields.io/badge/k8s-v1.28.2-green)
+# Prerequisites
 
 ### Step 1: Deploy a 5G Network with Network Slicing Support
 
