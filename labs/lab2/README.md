@@ -7,10 +7,11 @@ paginate: true
 # Lab 2: Querying Prometheus using PromQL
 
 
-In this lab, you will learn how to query Prometheus for metrics using the PromQL language.
+In this lab, you will learn how to query Prometheus for metrics using the PromQL language. Specifically, you will learn the following:
 
-- **What is PromQL** – What it is and how it works
-- **Filtering and Aggregation** – How to expose application data to Prometheus
+- **What is PromQL** – Basics of Prometheus Query Language
+- **Filtering and Aggregation** – Using PromQL labels and functions
+- **Querying 5G metrics** - How to use PromQL to query 5G metrics
 
 ---
 # PromQL: The Query Language for Prometheus
@@ -71,12 +72,110 @@ So far, we have only looked at Equals operator. Try experimenting with the opera
 =~: Regular expression (Regex) match
 !~: Regular expression (Regex) non-match
 ```
+
 ---
+# PromQL - Instant Vectors
+Up till now, you have only executed queries selecting the latest value for all series found, which is known as an `INSTANT VECTOR`. There are PromQL functions that return a range of values, known as a `RANGE VECTOR`. These have a duration specified at the end in the form `[number,unit]`. 
+
+Let's look at the example below showing `workshop_response_time_seconds` for the past 5 seconds.
+
+```
+workshop_response_time_seconds{region="us-east", service="auth_service"}[5s]
+```
+Valid duration are `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours), `d` (days), `y` (years)
+
+
+---
+# PromQL - Operations on Data
+PromQL allows various functions to perform operations on the data. For example, we can calculate the **per-second change over time in a range vector** using the `deriv()` function. 
+
+```
+deriv(workshop_response_time_seconds{region="us-east", service="auth_service"}[5s])
+```
+
+**Graph**: Switch to the `Graph` tab in the expression browser, and see the per-second change reprsented visually.
+
+
+
+The list of available functions can be found in the [Prometheus docs](https://prometheus.io/docs/prometheus/latest/querying/functions/).
+
+---
+# PromQL - Time Shifting Data
+Next, let's look at how to select data in the past. 
+
+This is known as **time shifting**.
+
+To do this you append `offset` and a `duration` such as looking at `workshop_response_time_seconds` over 5 seconds back 10 minutes ago:
+
+
+```
+workshop_response_time_seconds{region="us-east", service="auth_service"}[5s] offset 10m
+```
+---
+
 # PromQL - Exploring 5G Metrics
 
-If you have submitted a monitoring request, and MDEs are installed you should see the targets for AMF, SMF 
+If you have submitted a monitoring request, and MDEs are installed you should see the targets for AMF, SMF and UPF NFs, as shown below.
 
-- Take a moment to explore the available metrics. Notice that the autocomplete suggestions show descriptions for each metric, which can help you understand what each metric tracks.
+![](../images/5g-targets.png)
 
-> [!TIP]
->  Look for keywords like 5g, smf, subscriber, or session to quickly find relevant metrics for this lab.
+Take a moment to explore the available metrics from the expression browser. Look for keywords like `fivegs`, `smf`, `subscriber`, or `session` to quickly find relevant metrics.
+
+---
+# PromQL - Filtering using Regex
+Let's look at some advanced querying using Regex.
+
+Suppose you wanted to look at the CPU usage of the SMF. You could do that with:
+
+```
+container_cpu_usage_seconds_total{pod="open5gs-smf1-7c88965ff6-jfbmp"}
+```
+The problem here is that we can have `N` SMF pods for `N` slices!
+
+We can use a Regex to do this. We want to select the `container_cpu_usage_seconds_total` for a pod that contains the string `smf`. So let's make sure we search for everything that exists before and after the string `smf`.
+So we use the `.*` pattern to select **0 or more of any character**.
+
+```
+container_cpu_usage_seconds_total{pod=".*smf.*"}
+```
+---
+# PromQL - Aggregation
+
+So far you have been visualizing time series data that is highly dimensional. That means you can narrow down your search results using multiple labels.
+
+Now, we are going to look at how you can aggregate over all these dimensions (e.g., labels). To do this, you can you aggregation functions such as `sum`, `avg`, `min` and `max`.
+
+Note that these operators do not aggregate over time, but **across multiple series at each point in time**.
+
+For example, now we can sum up our CPU usage of the SMF as follows:
+
+```
+sum(container_cpu_usage_seconds_total{pod=~".*smf.*"})
+```
+
+---
+# PromQL - Exercises
+
+## Task 1: Retrieve the Number of Registered Subscribers
+
+Search for the metric `fivegs_amffunction_rm_registeredsubnbr`. This metric tracks the number of registered subscribers in each slice.
+
+**Question**: How many registered subscribers are there in each slice? 
+
+## Task 2: Retrieve Session IDs for Each Slice
+
+The SMF manages session IDs (`seid`), which are essential for tracking connections across slices. Query the metric that shows session IDs. 
+
+**Question**: Which session IDs are associated with slice 1 with `SNSSAI=1-000001`?
+
+---
+# Next Steps
+
+**Congratulations!**
+You've successfully completed the following:
+- Learned about the basics of PromQL.
+- Learned about instant and range vectors and how to perform operations on data using PromQL functions.
+- Explored 5G metrics scraped by Prometheus.
+
+**What's Next?**
+Continue to [Lab 3](../lab3/README.md) to learn about using Prometheus HTTP API using Python to easily execute more complex operations.
