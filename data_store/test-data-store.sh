@@ -59,6 +59,6 @@ if [ -n "$bucket_contents" ]; then
     print_info "$bucket_contents"
     echo "Note that monitoring data is uploaded to S3 buckets every 2 hours."
 else
-    print_info "Failed to list buckets. Buckets may be empty before NSSDC deployment."
+    print_info "Failed to list buckets. Note that buckets may be empty before 2 hours."
     exit 1
 fi
