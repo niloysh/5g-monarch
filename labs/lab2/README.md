@@ -25,7 +25,7 @@ This language is called **PromQL** and provides an open standard unified way of 
 
 ---
 # Prometheus Query Engine
-If we take a look at the Prometheus internals, we find that the ingested time series data (metrics) are scraped from configured targets and stored in a Time Series DataBase (TSDB). An internal PromQL engine supports our ability to query that data.
+If we take a look at the Prometheus internals, we find that the ingested time series data (metrics) are scraped from configured targets and stored in a Time Series DataBase (TSDB). An internal PromQL engine supports querying that data.
 
 ![](../images/query-enginex.png)
 
@@ -33,13 +33,13 @@ If we take a look at the Prometheus internals, we find that the ingested time se
 # PromQL Terminology
 
 
-- **Query** - a PromQL query is not like `SQL (SELECT * FROM...)`, but consist of nested functions with each inner function returning the data described to the next outer function. An example query is given below.
+- **Query** - a PromQL query is not like `SQL (SELECT * FROM...)`, rather consists of nested functions with each inner function returning the data described to the next outer function. An example query is given below.
 
     ```bash
     avg(rate(http_requests_total{status="200"}[5m])) by (job)
     ```
 
-- **Aggregation** - using operators that support combining elements from a single function, resulting in new results with fewer elements by combining values e.g., `(SUM, MIN, MAX, AVG...)`
+- **Aggregation** - using operators that support combining elements from a single function, resulting in new results with fewer elements by combining values, e.g., `(SUM, MIN, MAX, AVG...)`
 
 - **Filtering** - the act of removing metrics from a query result by exclusion, aggregation, or applying language functions to reduce the results.
 
@@ -64,8 +64,7 @@ We can narrow down the results using one or more labels. Try the following query
 workshop_response_time_seconds{region="us-east", service="auth_service"}
 ```
 
-**Matching Operators**
-So far, we have only looked at Equals operator. Try experimenting with the operators below.
+**Matching Operators**: So far, we have only looked at Equals operator. Try experimenting with the operators below.
 ```
 =: Equals
 !=: Not Equals
@@ -130,10 +129,10 @@ Suppose you wanted to look at the CPU usage of the SMF. You could do that with:
 ```
 container_cpu_usage_seconds_total{pod="open5gs-smf1-7c88965ff6-jfbmp"}
 ```
-The problem here is that we can have `N` SMF pods for `N` slices!
+The problem here is that we can have `N` SMF pods for `N` slices.
 
-We can use a Regex to do this. We want to select the `container_cpu_usage_seconds_total` for a pod that contains the string `smf`. So let's make sure we search for everything that exists before and after the string `smf`.
-So we use the `.*` pattern to select **0 or more of any character**.
+We can use a Regex to do this. We want to select the `container_cpu_usage_seconds_total` for a pod that contains the string `smf`. Let's make sure we search for everything that exists before and after the string `smf`.
+So, we use the `.*` pattern to select **0 or more of any character**.
 
 ```
 container_cpu_usage_seconds_total{pod=".*smf.*"}
@@ -143,11 +142,11 @@ container_cpu_usage_seconds_total{pod=".*smf.*"}
 
 So far you have been visualizing time series data that is highly dimensional. That means you can narrow down your search results using multiple labels.
 
-Now, we are going to look at how you can aggregate over all these dimensions (e.g., labels). To do this, you can you aggregation functions such as `sum`, `avg`, `min` and `max`.
+Now, we are going to look at how you can aggregate over all these dimensions (e.g., labels). To do this, you can aggregation functions such as `sum`, `avg`, `min` and `max`.
 
 Note that these operators do not aggregate over time, but **across multiple series at each point in time**.
 
-For example, now we can sum up our CPU usage of the SMF as follows:
+For example, now we can sum up CPU usage of the SMF as follows:
 
 ```
 sum(container_cpu_usage_seconds_total{pod=~".*smf.*"})
@@ -178,4 +177,4 @@ You've successfully completed the following:
 - Explored 5G metrics scraped by Prometheus.
 
 **What's Next?**
-Continue to [Lab 3](../lab3/README.md) to learn about using Prometheus HTTP API using Python to easily execute more complex operations.
+Continue to [Lab 3](../lab3/README.md) to learn about Prometheus HTTP API using Python to easily execute more complex operations.
