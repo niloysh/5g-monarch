@@ -59,15 +59,15 @@ print(response)
 # Compose Slice-Level KPIs (1/2)
 
 
-We've already explored examples of slice-level metrics, like `slice_throughput`, as we saw in our Grafana dashboard.
+We have already explored examples of slice-level metrics, like `slice_throughput`, as we saw in our Grafana dashboard.
 
-Monarch's KPI computation module leverages the Python HTTP API to query raw metrics, calculate KPIs at the slice level, and store them back in a `data_store`, making them accessible for visualization in Grafana.
+Monarch's KPI computation module leverages the Python HTTP API to query raw metrics, calculates KPIs at the slice level, and stores them back in a `data_store`, making them accessible for visualization in Grafana.
 
 
 
 **Task**: 
 - Task 3 of [exercise.py](exercise.py) dives deeper into composing slice-level metrics, specifically focusing on calculating resource utilization for slice 1 (with `SNSSAI=1-000001`). 
-- You'll combine multiple queries to determine memory usage, providing a practical understanding of how to build KPIs from various metric sources.
+- You will combine multiple queries to determine memory usage, providing a practical understanding of how to build KPIs from various metric sources.
 
 ---
 # Compose Slice-Level KPIs (2/2)
