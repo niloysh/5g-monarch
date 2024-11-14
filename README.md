@@ -159,7 +159,7 @@ Our NSSDC uses [Prometheus](https://prometheus.io/) which is an open-source syst
 
 #### 1. Create the Environment File
 
-Begin by creating a `.env` file in the root of your repository to store important environment variables, such as the Minio access key and secret key:
+Begin by creating a `.env` file in the root of your repository to store important environment variables, such as the MinIO access key and secret key:
 
 ```bash
 ~/5g-monarch$ touch .env
@@ -250,8 +250,7 @@ Once the pods are confirmed as running, you can access the Thanos GUI at http://
 
 ### Step 5: Deploy the Data Visualization Component
 
-In this step, we will deploy the `data_visualization` component, which leverages  
-[Grafana](https://grafana.com/).
+In this step, we will deploy the `data_visualization` component, which leverages [Grafana](https://grafana.com/).
 
 #### 1. Deploy the Component
 
@@ -272,7 +271,7 @@ dataviz-grafana-747d778c9c-xkhhv     2/2     Running   0          45s
 
 #### 2. Access the Grafana GUI
 
-Once the data_visualization component has been successfully deployed, you can access the Grafana GUI at at http://localhost:32005. Login with the default credentials:
+Once the data_visualization component has been successfully deployed, you can access the Grafana GUI at http://localhost:32005. Login with the default credentials:
 - Username: **admin**
 - Password: **prom-operator**
 
@@ -345,7 +344,7 @@ python3 run.py
 ```
 
 > [!WARNING]
-> Keep the nfv orchestrator running in this terminal, as it will be essential for interactions with the monitoring_manager and other Monarch modules! 
+> Keep the nfv orchestrator running in this terminal, as it will be essential for interactions with the monitoring_manager and other Monarch modules. 
 
 ### Step 7: Deploy the Monitoring Manager
 
@@ -399,7 +398,7 @@ cd request_translator
 
 ### Step 9: Configure Datasources and Dashboards in Grafana
 
-In this step, we’ll configure datasources and add dashboards in Grafana, using the Grafana GUI from Step 5.
+In this step, we will configure datasources and add dashboards in Grafana, using the Grafana GUI from Step 5.
 
 #### 1. Add the Monarch Data Distribution (Thanos) Datasource
 
@@ -421,11 +420,11 @@ First, we need to add the Monarch datadist (Thanos) datasource. Click on Home->C
 To import a pre-configured dashboard for monitoring two network slices:
 
 1.	Go to **Home > Dashboards > New > Import**.
-2.	Select the `monarch-dashboard.json` file located at [dashboards](dashboards) and follow the prompts to complete the import.
+2.	Select the `monarch-dashboard.json` file located under [dashboards](dashboards) and follow the prompts to complete the import.
 
 ### Step 10: Submit a Slice Monitoring Request
 
-In this step, you’ll submit a slice monitoring request to the request_translator component. Upon successful submission, the Monitoring Data Exporters (MDEs) and KPI computation processes will be triggered, and the results will appear on the Grafana dashboard.
+In this step, you will submit a slice monitoring request to the request_translator component. Upon successful submission, the Monitoring Data Exporters (MDEs) and KPI computation processes will be triggered, and the results will appear on the Grafana dashboard.
 
 #### 1. Update Environment Variable
 
@@ -507,7 +506,7 @@ Response: {'message': 'Monitoring request deleted', 'status': 'success'}
 At this point, all Monarch components are set up and ready for use.
 
 ### Step 11: Generate Traffic and View KPIs in Grafana
-To start monitoring KPIs in real-time, generate traffic through the UEs. Once the traffic flows through, you'll see computed KPIs for the network slices in the Grafana dashboard configured earlier.
+To start monitoring KPIs in real-time, generate traffic through the UEs. Once the traffic flows through, you will see computed KPIs for the network slices in the Grafana dashboard configured earlier.
 ![monarch-dashboard](images/monarch-dashboard.png). 
 
 > [!NOTE]
