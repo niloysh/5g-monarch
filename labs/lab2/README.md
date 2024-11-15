@@ -27,7 +27,7 @@ This language is called **PromQL** and provides an open standard unified way of 
 # Prometheus Query Engine
 If we take a look at the Prometheus internals, we find that the ingested time series data (metrics) are scraped from configured targets and stored in a Time Series DataBase (TSDB). An internal PromQL engine supports our ability to query that data.
 
-![](../images/query-enginex.png)
+![](../images/query-engine.png)
 
 ---
 # PromQL Terminology
@@ -74,7 +74,7 @@ So far, we have only looked at Equals operator. Try experimenting with the opera
 ```
 
 ---
-# PromQL - Instant Vectors
+# PromQL - Range Vectors
 Up till now, you have only executed queries selecting the latest value for all series found, which is known as an `INSTANT VECTOR`. There are PromQL functions that return a range of values, known as a `RANGE VECTOR`. These have a duration specified at the end in the form `[number,unit]`. 
 
 Let's look at the example below showing `workshop_response_time_seconds` for the past 5 seconds.
@@ -123,21 +123,20 @@ Take a moment to explore the available metrics from the expression browser. Look
 
 ---
 # PromQL - Filtering using Regex
-Let's look at some advanced querying using Regex.
-
-Suppose you wanted to look at the CPU usage of the SMF. You could do that with:
+Let's look at some advanced querying using Regex. Suppose you wanted to look at the CPU usage of the SMF. You could do that by specifying the pod name in the label:
 
 ```
-container_cpu_usage_seconds_total{pod="open5gs-smf1-7c88965ff6-jfbmp"}
+container_cpu_usage_seconds_total{pod="open5gs-smf1-<id>"}
 ```
-The problem here is that we can have `N` SMF pods for `N` slices!
+The problem is that we can have `N` SMF pods for `N` slices, each with a different `<id>`!
 
-We can use a Regex to do this. We want to select the `container_cpu_usage_seconds_total` for a pod that contains the string `smf`. So let's make sure we search for everything that exists before and after the string `smf`.
-So we use the `.*` pattern to select **0 or more of any character**.
+We can use a regex to select `container_cpu_usage_seconds_total` for any pod containing `smf`. To match any characters before and after `smf`, we use `.*`, which matches **0 or more of any character**.
 
 ```
-container_cpu_usage_seconds_total{pod=".*smf.*"}
+container_cpu_usage_seconds_total{pod=~".*smf.*"}
 ```
+**Note**: `=~` specifies a regex match.
+
 ---
 # PromQL - Aggregation
 

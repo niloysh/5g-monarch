@@ -43,7 +43,7 @@ response = query_prometheus(query)
 print(response)
 ```
 
-**Task**: Try running `python3 exercise.py` to see the raw JSON response from the API.
+**Task 1**: Try running `python3 exercise.py` to see the raw JSON response from the API.
 
 ---
 
@@ -53,7 +53,7 @@ print(response)
 
 2.	**Query Example**: Query metrics like `kube_pod_info` and `kube_pod_container_resource_requests` to get details about the network functions' CPU and memory usage.
 
-**Task**: Modify the code to retrieve CPU and memory usage data, then parse and display it in a readable format.
+**Task 2**: Modify the code to retrieve CPU and memory usage data, then parse and display it in a readable format.
 
 ---
 # Compose Slice-Level KPIs (1/2)
@@ -65,8 +65,8 @@ Monarch's KPI computation module leverages the Python HTTP API to query raw metr
 
 
 
-**Task**: 
-- Task 3 of `labs/lab3/exercise.py` dives deeper into composing slice-level metrics, specifically focusing on calculating resource utilization for slice 1 (with `SNSSAI=1-000001`). 
+**Task 3**: 
+- **Task 3** of `labs/lab3/exercise.py` dives deeper into composing slice-level metrics, specifically focusing on calculating resource utilization for slice 1 (with `SNSSAI=1-000001`). 
 - You'll combine multiple queries to determine memory usage, providing a practical understanding of how to build KPIs from various metric sources.
 
 ---

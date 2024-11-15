@@ -22,7 +22,7 @@ Prometheus is a metrics-based monitoring toolkit that provides libraries and com
 - Storing metrics
 - Querying metrics
 
-![bg right contain](../images/prometheus.png)
+![bg right contain](../images/prometheus-1.png)
 
 
 ---
@@ -88,7 +88,7 @@ In this lab, we’ll use the **Python SDK** to instrument a sample application.
 cd labs/lab1
 ```
 **2. Inspect the Instrumented Code:**
-- Open `app/exporter.py` to see a Python application generating simulated metrics for this workshop.
+- Open `app/exporter.py` in VSCode to see a Python application for generating simulated metrics for this workshop.
 - The app is instrumented with the Prometheus Python SDK to expose metrics.
 
 ---

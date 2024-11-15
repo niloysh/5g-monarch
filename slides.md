@@ -25,6 +25,7 @@ Use the `cd` command to ensure you’re starting from your home directory.
 **2. Clone the Monarch repository**
 Use `git clone` to fetch the source code from the Monarch GitHub repository.
 ```bash
+cd ~
 git clone https://github.com/niloysh/5g-monarch.git
 cd 5g-monarch
 ```
@@ -147,7 +148,7 @@ This script initializes the NSSDC (Network Slice Segment Data Collector), which 
 
 **Prometheus** is an open-source monitoring toolkit. It collects and stores metrics as time series data, offering powerful querying capabilities and seamless integrations with tools like Grafana for visualization.
 
-We will cover Prometheus in more detail in [Lab 1](labs/lab1/README.md) and [Lab 2](labs/lab2/README.md), where you will learn how to instrument an application to expose metrics to Prometheus and work with the Prometheus query language.
+We will cover Prometheus in more detail in **Lab 1** and **Lab 2**, where you will learn how to instrument an application to expose metrics to Prometheus and work with the Prometheus query language.
 
 ---
 # Verify and Test Monarch NSS Deployment
@@ -165,7 +166,7 @@ You can access the Prometheus GUI at: [http://localhost:30095](http://localhost:
 # Phase 4 - Network Slice Monitoring
 
 ---
-# Submitting a Slice Monitoring Request (1/3)
+# Submitting a Slice Monitoring Request (1/4)
 To submit a slice monitoring request, we interact with the **Request Translator** module, which processes the request and forwards it for further actions.
 
 **1. Create the JSON Request**
@@ -183,7 +184,7 @@ cd request_translator
 python3 test_api.py --json_file requests/request_slice.json submit
 ```
 ---
-# Submitting a Slice Monitoring Request (2/3)
+# Submitting a Slice Monitoring Request (2/4)
 After submitting the slice monitoring request, Monarch will initiate the creation of **Monitoring Data Exporters (MDEs)** and the **KPI computation module**.
 
 **1. Verify MDE Creation**
@@ -196,23 +197,36 @@ kubectl get svc -n open5gs | grep metrics
 Next, in your terminal where the `kubectl get pods -n monarch` command is running, you should observe a new pod for the KPI Calculator. This pod is responsible for calculating and processing KPIs based on the monitoring data.
 
 ---
-# Submitting a Slice Monitoring Request (3/3)
+# Submitting a Slice Monitoring Request (3/4)
 
 
 **3. View Logs of the KPI Calculator**
 To inspect the logs of the KPI calculator pod, use the following command:
 ```bash
-kubectl logs kpi-calculator-<replace_id> -n monarch
+kubectl logs deployments/kpi-calculator -n monarch
 ```
 In the logs, you should see output indicating that the slice SNSSAI is being monitored, but with a rate of **0 Mbps** (since no traffic is flowing through the slice during this phase).
 
+---
+# Submitting a Slice Monitoring Request (4/4)
+
 **4. Send Traffic to Trigger KPI Calculations**
-To observe the monitoring in action, send traffic through the slice by performing a ping test. You can do this from the **UE1** and **UE2** pods, using the `uesimtun0` interface, just like we did earlier in the core deployment session.
+To observe the monitoring in action, send traffic through the slice(s) by performing a ping test. 
+
+You can do this from the **UE1** and **UE2** pods, using the `uesimtun0` interface, just like we did earlier in the core deployment session.
+
+```bash
+kubectl exec -it deployments/ueransim-ue1 -n open5gs -- /bin/bash
+```
+
+```
+ping -I uesimtun0 www.google.ca
+```
 
 Once you've started the ping test, keep it running and check the KPI calculator logs again.
 
 ---
-# Visualizing Slice KPI using Grafana (1/3)
+# Visualizing Slice KPI using Grafana (1/4)
 
 **1. Access Grafana**
 Open the Grafana interface (http://localhost:32005) and log in using the following credentials: **username:** `admin` and **password:** `monarch-operator`.
@@ -223,7 +237,7 @@ Once logged in, select **Dashboards** from the left sidebar. Locate and open the
 ![w:800](images/monarch-dashboard-1.png)
 
 ---
-# Visualizing Slice KPI using Grafana (2/3)
+# Visualizing Slice KPI using Grafana (2/4)
 
 ![w:1000](images/monarch-dashboard-2.png)
 
@@ -232,23 +246,34 @@ Each panel shows throughput per slice and direction (uplink/downlink). At the bo
 If you deployed UE3 in our previous core deployment session, you should see two SEIDs displayed here, corresponding to multiple active sessions.
 
 ---
-# Visualizing Slice KPI using Grafana (3/3)
+# Visualizing Slice KPI using Grafana (3/4)
 
 To customize a panel, click the 3 little dots in the corner, and select the Edit option:
 ![w:1000](images/grafana-edit-1.png)
 
-In the edit view, you’ll notice:
-**1. Data Source** – The data source for this panel is Thanos, which aggregates and retrieves monitoring data.
-**2.Metrics Query** – In the Metrics Browser section, you'll see a query written in PromQL (Prometheus Query Language). This query defines how the data is fetched and displayed on the panel.
+In the edit view, you'll notice the **Data Source** – The data source for this panel is Thanos, which aggregates and retrieves monitoring data.
+
+![](images/data-source.png)
+
+
+---
+# Visualizing Slice KPI using Grafana (4/4)
+
+![](images/grafana-metrics-browser.png)
+
+In the **Metrics Browser** section, you'll see a query written in PromQL (Prometheus Query Language). This query defines how the data is fetched and displayed on the panel. We will look at PromQL in detail in our **Labs**.
 
 ---
 # Looking Under the Hood
 
-Now that the slice KPIs are being computed, let’s revisit the core functionality by running the `test-monarch-core.sh` script again.
+Now that the slice KPIs are being computed, let's run Monarch core test script again.
+```bash
+./test-monarch-core.sh
+```
 
-This time, in the **Monitoring Manager** test output, you should see additional details related to the monitoring directives that were generated from the high-level monitoring request we submitted earlier.
+This time, in the **Monitoring Manager** test output, you should see the monitoring directives that were generated from the high-level monitoring request we submitted earlier.
 
-![w:700](images/monitoring-directives.png)
+![w:700](images/core-test-2.png)
 
 ---
 # Next Steps
