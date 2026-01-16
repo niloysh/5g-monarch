@@ -57,3 +57,8 @@ metrics:
     enabled: true
     namespace: monarch
     interval: 1s
+
+image:
+  registry: public.ecr.aws
+  repository: bitnami/thanos
+  tag: 0.34.1-debian-12-r0
